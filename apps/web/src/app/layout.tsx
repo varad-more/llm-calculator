@@ -41,11 +41,54 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
         </header>
         <div className="flex-1">{children}</div>
         <footer className="mt-16 border-t">
-          <div className="mx-auto max-w-7xl px-4 py-6 text-xs text-muted-foreground md:px-8">
-            Every formula is in <span className="font-mono">docs/MATH.md</span> with a derivation and a
-            citation; every empirical constant is in <span className="font-mono">data/assumptions.json</span>{' '}
-            with a source and an honest confidence label. Inference only — training and optimizer memory
-            are out of scope.
+          <div className="mx-auto max-w-7xl px-4 py-10 md:px-8">
+            <div className="grid gap-8 md:grid-cols-[1.6fr_1fr_1fr]">
+              <div>
+                <p className="text-sm font-semibold tracking-tight">llmsize</p>
+                <p className="mt-2 max-w-md text-xs leading-relaxed text-muted-foreground">
+                  Inference sizing and serving-config generation for LLMs. Engine-accurate memory
+                  allocation, roofline throughput, and the exact flags to run it — computed by pure
+                  functions with zero runtime dependencies, in your browser.
+                </p>
+              </div>
+
+              <nav className="flex flex-col gap-2 text-xs text-muted-foreground">
+                <span className="font-medium text-foreground">Pages</span>
+                <Link href="/" className="hover:text-foreground">Size a config</Link>
+                <Link href="/fits/" className="hover:text-foreground">What fits my GPU</Link>
+                <Link href="/explained/" className="hover:text-foreground">How it works</Link>
+              </nav>
+
+              <div className="flex flex-col gap-2 text-xs text-muted-foreground">
+                <span className="font-medium text-foreground">Source</span>
+                <a href="https://github.com/varad-more/llmsize" className="hover:text-foreground">
+                  github.com/varad-more/llmsize
+                </a>
+                <span className="font-mono">docs/MATH.md</span>
+                <span className="font-mono">data/assumptions.json</span>
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-col gap-3 border-t pt-6 text-xs text-muted-foreground md:flex-row md:items-center">
+              <p>
+                Built by{' '}
+                <a
+                  href="https://github.com/varad-more"
+                  className="font-medium text-foreground underline underline-offset-2"
+                >
+                  Varad More
+                </a>
+                . Apache-2.0. Contributions — especially{' '}
+                <Link href="/explained/#assumptions" className="underline underline-offset-2 hover:text-foreground">
+                  real engine logs
+                </Link>{' '}
+                — welcome.
+              </p>
+              <p className="md:ml-auto">
+                Every number here is <span className="font-medium">predicted</span> until an engine log
+                says otherwise. Inference only.
+              </p>
+            </div>
           </div>
         </footer>
       </body>
