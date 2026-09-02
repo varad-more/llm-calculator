@@ -136,6 +136,12 @@ Two pages, both driven by the same pure functions as the CLI:
 - **What fits my GPU** — the question backwards: given the hardware, sweep every model,
   quantization, KV dtype, context and TP degree through the same allocator and rank what survives.
 
+- **How it works** (`/explained/`) — the method, written out: what quantization actually stores and
+  why a 4-bit checkpoint is never 4 bits per weight, how the KV cache is sized under GQA/MLA/sliding
+  window, the residual each engine is really solving for, and the constants it all rests on. Every
+  figure on the page is computed at build time by the same functions the sizer calls, so the
+  documentation cannot drift from the math.
+
 Plus one pre-rendered static page per model (`/llama-3-1-70b-instruct-vram/`) with real numbers in
 the HTML before any JS runs.
 
