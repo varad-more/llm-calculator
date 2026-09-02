@@ -117,7 +117,27 @@ const r = size({ model: 'deepseek-ai/DeepSeek-V3', gpu: 'h200-sxm-141', engine: 
 console.log(r.plan.fits, gib(r.plan.availableKvBytes), r.command)
 ```
 
-Web UI: `pnpm dev`, or `pnpm build` for a static export with a pre-rendered page per model.
+## Web UI
+
+```bash
+pnpm install
+pnpm dev       # http://localhost:3000
+pnpm preview   # static export, served on :8080 — no server, no backend
+```
+
+Two pages, both driven by the same pure functions as the CLI:
+
+- **Size a config** — pick a model, GPU, engine and workload and watch the per-GPU allocation
+  redraw. Tabs on the result surface the four serving features: the runnable command, the memory
+  breakdown line by line, **speculative decoding** (draft model, acceptance rate, and an honest
+  sub-1.0 speedup when the draft is too slow), **multi-LoRA** slot memory, and **disaggregated**
+  prefill/decode with the KV bytes that have to cross the wire. Every assumption is editable in
+  place. The config lives in the query string, so a sizing is a link you can paste.
+- **What fits my GPU** — the question backwards: given the hardware, sweep every model,
+  quantization, KV dtype, context and TP degree through the same allocator and rank what survives.
+
+Plus one pre-rendered static page per model (`/llama-3-1-70b-instruct-vram/`) with real numbers in
+the HTML before any JS runs.
 
 ## How it is kept honest
 

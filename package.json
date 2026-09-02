@@ -15,7 +15,8 @@
     "goldens": "node --experimental-strip-types scripts/gen-goldens.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "build": "pnpm gen && pnpm -F @llmsize/core build && pnpm -F @llmsize/web build",
-    "dev": "pnpm -F @llmsize/web dev"
+    "dev": "pnpm -F @llmsize/web dev",
+    "preview": "pnpm build && python3 -m http.server 8080 --directory apps/web/out"
   },
   "devDependencies": {
     "@types/node": "^26.4.1",
