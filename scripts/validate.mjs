@@ -60,7 +60,7 @@ const table = rows.length
   ? ['| Model | GPU | Engine | Version | Weights | KV | Overhead | Tokens |',
      '| --- | --- | --- | --- | --- | --- | --- | --- |',
      ...rows.map((r) => `| ${r.model} | ${r.gpu} | ${r.engine} | ${r.engineVersion} | ${pct(r.errors.weights)} | ${pct(r.errors.kv)} | ${pct(r.errors.overhead)} | ${pct(r.errors.maxTokens)} |`)].join('\n')
-  : '_No validation cases yet._ Every number this tool prints is **predicted**, not measured.\n\nIf you have a GPU, the fastest way to help is to paste a real engine startup log into an issue:\nhttps://github.com/varad-more/llmsize/issues/new?template=validation-log.yml'
+  : '_No validation cases yet._ Every number this tool prints is **predicted**, not measured.\n\nIf you have a GPU, the fastest way to help is to paste a real engine startup log into an issue:\nhttps://github.com/varad-more/llm-calculator/issues/new?template=validation-log.yml'
 
 writeFileSync(join(ROOT, 'docs/VALIDATION.md'), `# Validation
 

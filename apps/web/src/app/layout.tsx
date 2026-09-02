@@ -32,7 +32,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               <Link href="/explained/" className="hover:text-foreground">How it works</Link>
             </nav>
             <a
-              href="https://github.com/varad-more/llmsize"
+              href="https://github.com/varad-more/llm-calculator"
               className="ml-auto text-xs text-muted-foreground hover:text-foreground"
             >
               source
@@ -61,8 +61,8 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
 
               <div className="flex flex-col gap-2 text-xs text-muted-foreground">
                 <span className="font-medium text-foreground">Source</span>
-                <a href="https://github.com/varad-more/llmsize" className="hover:text-foreground">
-                  github.com/varad-more/llmsize
+                <a href="https://github.com/varad-more/llm-calculator" className="hover:text-foreground">
+                  github.com/varad-more/llm-calculator
                 </a>
                 <span className="font-mono">docs/MATH.md</span>
                 <span className="font-mono">data/assumptions.json</span>
