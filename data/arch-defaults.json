@@ -1,0 +1,21 @@
+{
+  "_note": "HF model classes fill in fields their config.json omits (e.g. gemma3's text_config carries no vocab_size). We never *silently* default: any field taken from here is recorded in ModelSpec.assumed and surfaced in every output. Values are transcribed from the transformers config class defaults.",
+  "byModelType": {
+    "gemma3_text": {
+      "source_url": "https://github.com/huggingface/transformers/blob/main/src/transformers/models/gemma3/configuration_gemma3.py",
+      "fields": { "vocab_size": 262208, "max_position_embeddings": 131072, "tie_word_embeddings": true, "sliding_window_pattern": 6, "rope_theta": 1000000 }
+    },
+    "gemma3": {
+      "source_url": "https://github.com/huggingface/transformers/blob/main/src/transformers/models/gemma3/configuration_gemma3.py",
+      "fields": { "vocab_size": 262208, "max_position_embeddings": 131072, "tie_word_embeddings": true, "sliding_window_pattern": 6 }
+    },
+    "gemma2": {
+      "source_url": "https://github.com/huggingface/transformers/blob/main/src/transformers/models/gemma2/configuration_gemma2.py",
+      "fields": { "tie_word_embeddings": true, "sliding_window_pattern": 2 }
+    },
+    "gemma": {
+      "source_url": "https://github.com/huggingface/transformers/blob/main/src/transformers/models/gemma/configuration_gemma.py",
+      "fields": { "tie_word_embeddings": true }
+    }
+  }
+}

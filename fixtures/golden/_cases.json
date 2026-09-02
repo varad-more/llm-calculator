@@ -1,0 +1,21 @@
+{
+  "_note": "Inputs only. Expected outputs are generated into one file per case by `node scripts/gen-goldens.mjs` and executed by BOTH packages/core/test/golden.test.ts and python/tests/test_golden.py. Regenerate deliberately: a diff here is a behaviour change.",
+  "cases": [
+    { "name": "llama31-8b-h100-vllm-32k",        "request": { "model": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "h100-sxm-80", "engine": "vllm", "context": 32768, "concurrency": 64, "avgSeqLen": 4096 } },
+    { "name": "llama31-70b-h100x4-vllm-fp8kv",   "request": { "model": "meta-llama/Llama-3.1-70B-Instruct", "gpu": "h100-sxm-80", "engine": "vllm", "tp": 4, "context": 32768, "concurrency": 64, "avgSeqLen": 4096, "kvDtype": "fp8" } },
+    { "name": "llama31-405b-h200x8-vllm-awq",    "request": { "model": "meta-llama/Llama-3.1-405B-Instruct", "gpu": "h200-sxm-141", "engine": "vllm", "tp": 8, "context": 16384, "concurrency": 32, "quant": "awq-int4" } },
+    { "name": "llama31-8b-l4-vllm-infeasible",   "request": { "model": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "l4-24", "engine": "vllm", "context": 131072, "concurrency": 1 } },
+    { "name": "llama31-8b-a100-tp16-replicated", "request": { "model": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "a100-sxm-80", "engine": "vllm", "tp": 16, "context": 8192, "concurrency": 8 } },
+    { "name": "deepseek-v3-h200x8-vllm-mla",     "request": { "model": "deepseek-ai/DeepSeek-V3", "gpu": "h200-sxm-141", "engine": "vllm", "tp": 8, "context": 32768, "concurrency": 16, "quant": "fp8" } },
+    { "name": "gemma3-27b-h100-vllm-swa",        "request": { "model": "google/gemma-3-27b-it", "gpu": "h100-sxm-80", "engine": "vllm", "context": 65536, "concurrency": 32, "avgSeqLen": 16384 } },
+    { "name": "mixtral-8x7b-a100x2-vllm-moe",    "request": { "model": "mistralai/Mixtral-8x7B-Instruct-v0.1", "gpu": "a100-sxm-80", "engine": "vllm", "tp": 2, "context": 16384, "concurrency": 16 } },
+    { "name": "gpt-oss-120b-h100-vllm-mxfp4",    "request": { "model": "openai/gpt-oss-120b", "gpu": "h100-sxm-80", "engine": "vllm", "tp": 2, "context": 32768, "concurrency": 64, "quant": "mxfp4" } },
+    { "name": "qwen3-30b-a3b-l40s-vllm-moe",     "request": { "model": "Qwen/Qwen3-30B-A3B", "gpu": "l40s-48", "engine": "vllm", "context": 8192, "concurrency": 16, "quant": "fp8" } },
+    { "name": "qwen25-7b-h100-vllm-prefixcache", "request": { "model": "Qwen/Qwen2.5-7B-Instruct", "gpu": "h100-sxm-80", "engine": "vllm", "context": 32768, "concurrency": 128, "avgSeqLen": 8192, "prefixCache": { "enabled": true, "hitRate": 0.8, "sharedPrefixTokens": 4096 } } },
+    { "name": "llama31-8b-h100-sglang",          "request": { "model": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "h100-sxm-80", "engine": "sglang", "context": 16384, "concurrency": 64, "avgSeqLen": 4096 } },
+    { "name": "llama31-70b-h100x4-trtllm",       "request": { "model": "meta-llama/Llama-3.1-70B-Instruct", "gpu": "h100-sxm-80", "engine": "trtllm", "tp": 4, "context": 16384, "concurrency": 32, "quant": "fp8" } },
+    { "name": "llama31-8b-rtx4090-llamacpp-q4",  "request": { "model": "meta-llama/Llama-3.1-8B-Instruct", "gpu": "rtx4090-24", "engine": "llamacpp", "quant": "gguf:Q4_K_M", "context": 8192, "concurrency": 4 } },
+    { "name": "llama31-70b-h100-pp2-tp2",        "request": { "model": "meta-llama/Llama-3.1-70B-Instruct", "gpu": "h100-sxm-80", "engine": "vllm", "tp": 2, "pp": 2, "context": 8192, "concurrency": 16 } },
+    { "name": "qwen25-72b-mi300x-vllm",          "request": { "model": "Qwen/Qwen2.5-72B-Instruct", "gpu": "mi300x-192", "engine": "vllm", "context": 32768, "concurrency": 32, "avgSeqLen": 8192, "assume": { "mbu_decode": 0.55 } } }
+  ]
+}

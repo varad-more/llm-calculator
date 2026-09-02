@@ -1,0 +1,44 @@
+{
+  "name": "llama31-70b-h100-pp2-tp2",
+  "request": {
+    "model": "meta-llama/Llama-3.1-70B-Instruct",
+    "gpu": "h100-sxm-80",
+    "engine": "vllm",
+    "tp": 2,
+    "pp": 2,
+    "context": 8192,
+    "concurrency": 16
+  },
+  "expected": {
+    "weightBytes": 141107497872,
+    "weightMethod": "measured",
+    "totalParams": 70553706496,
+    "weightBytesPerDevice": 35276874468,
+    "kvPerTokenBytesPerDevice": 81920,
+    "kvBytesPerDevice": 10737418240,
+    "activationBytes": 738197504,
+    "overheadTotalBytes": 2850827647.44,
+    "usableVramBytes": 85555748536.32,
+    "availableKvBytes": 38872471567.248,
+    "numBlocks": 29657,
+    "maxTokens": 474512,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "--tensor-parallel-size 2",
+      "--pipeline-parallel-size 2",
+      "--max-model-len 8192",
+      "--max-num-seqs 16",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.020911274089897455,
+    "decodeTokensPerSecond": 765.1375010062078,
+    "prefillFlops": 1243912857452544,
+    "ttftSeconds": 1.4139764067744067,
+    "bound": "compute"
+  }
+}

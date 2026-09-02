@@ -1,0 +1,46 @@
+{
+  "name": "llama31-8b-l4-vllm-infeasible",
+  "request": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "gpu": "l4-24",
+    "engine": "vllm",
+    "context": 131072,
+    "concurrency": 1
+  },
+  "expected": {
+    "weightBytes": 16060556376,
+    "weightMethod": "measured",
+    "totalParams": 8030261248,
+    "weightBytesPerDevice": 16060556376,
+    "kvPerTokenBytesPerDevice": 131072,
+    "kvBytesPerDevice": 17179869184,
+    "activationBytes": 738197504,
+    "overheadTotalBytes": 1905157797.6,
+    "usableVramBytes": 25666724560.896,
+    "availableKvBytes": 5134337931.206402,
+    "numBlocks": 2448,
+    "maxTokens": 39168,
+    "fits": false,
+    "autofix": {
+      "maxModelLen": 39168,
+      "maxNumSeqs": 0
+    },
+    "warningCodes": [
+      "infeasible"
+    ],
+    "flags": [
+      "--tensor-parallel-size 1",
+      "--max-model-len 39168",
+      "--max-num-seqs 0",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.16507564200812072,
+    "decodeTokensPerSecond": 6.057828931241146,
+    "prefillFlops": 149159986331648,
+    "ttftSeconds": 2.739393688368191,
+    "bound": "compute"
+  }
+}

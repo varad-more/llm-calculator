@@ -1,0 +1,32 @@
+name: Add a GPU
+description: Add hardware to data/gpus.json
+title: "gpu: <name>"
+labels: [hardware]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Every field needs a primary source. **Dense** TFLOPS only — vendor datasheets headline the
+        2:1 structured-sparsity figure, which is twice the real number and silently doubles every
+        throughput estimate. A unit test rejects entries above their dense ceiling.
+  - type: input
+    id: name
+    attributes: { label: Name, placeholder: NVIDIA H100 NVL 94GB }
+    validations: { required: true }
+  - type: input
+    id: source
+    attributes: { label: Datasheet URL }
+    validations: { required: true }
+  - type: textarea
+    id: specs
+    attributes:
+      label: Specs
+      description: VRAM, memory type, bandwidth, dense TFLOPS at each dtype, interconnect kind and bandwidth.
+      render: text
+    validations: { required: true }
+  - type: input
+    id: sparse
+    attributes:
+      label: The sparse bf16 and fp8 figures from the same datasheet
+      description: Needed for the test that guards against pasting them in by mistake.
+    validations: { required: true }

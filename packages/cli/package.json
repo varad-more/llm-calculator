@@ -1,0 +1,8 @@
+{
+  "name": "@llmsize/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": { "llmsize": "./bin/llmsize.mjs" },
+  "dependencies": { "@llmsize/core": "workspace:*" },
+  "files": ["bin", "src"]
+}

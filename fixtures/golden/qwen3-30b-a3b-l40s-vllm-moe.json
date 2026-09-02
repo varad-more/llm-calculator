@@ -1,0 +1,43 @@
+{
+  "name": "qwen3-30b-a3b-l40s-vllm-moe",
+  "request": {
+    "model": "Qwen/Qwen3-30B-A3B",
+    "gpu": "l40s-48",
+    "engine": "vllm",
+    "context": 8192,
+    "concurrency": 16,
+    "quant": "fp8"
+  },
+  "expected": {
+    "weightBytes": 31154638848,
+    "weightMethod": "derived",
+    "totalParams": 30532110336,
+    "weightBytesPerDevice": 31154638848,
+    "kvPerTokenBytesPerDevice": 98304,
+    "kvBytesPerDevice": 12884901888,
+    "activationBytes": 335544320,
+    "overheadTotalBytes": 1822321295.3600001,
+    "usableVramBytes": 51333449121.792,
+    "availableKvBytes": 13223144066.2528,
+    "numBlocks": 8407,
+    "maxTokens": 134512,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "--tensor-parallel-size 1",
+      "--max-model-len 8192",
+      "--max-num-seqs 16",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--quantization fp8",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.0778526199632419,
+    "decodeTokensPerSecond": 205.51652606623125,
+    "prefillFlops": 81324165562368,
+    "ttftSeconds": 0.24654893303734424,
+    "bound": "compute"
+  }
+}

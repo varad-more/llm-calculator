@@ -1,0 +1,42 @@
+{
+  "name": "mixtral-8x7b-a100x2-vllm-moe",
+  "request": {
+    "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
+    "gpu": "a100-sxm-80",
+    "engine": "vllm",
+    "tp": 2,
+    "context": 16384,
+    "concurrency": 16
+  },
+  "expected": {
+    "weightBytes": 93405713504,
+    "weightMethod": "measured",
+    "totalParams": 46702792704,
+    "weightBytesPerDevice": 46702856752,
+    "kvPerTokenBytesPerDevice": 65536,
+    "kvBytesPerDevice": 17179869184,
+    "activationBytes": 603979776,
+    "overheadTotalBytes": 2936284826.56,
+    "usableVramBytes": 85555748536.32,
+    "availableKvBytes": 27361032104.128006,
+    "numBlocks": 26093,
+    "maxTokens": 417488,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "--tensor-parallel-size 2",
+      "--max-model-len 16384",
+      "--max-num-seqs 16",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.04811173598066772,
+    "decodeTokensPerSecond": 332.55919109693167,
+    "prefillFlops": 228616881307648,
+    "ttftSeconds": 0.8192757390243061,
+    "bound": "compute"
+  }
+}

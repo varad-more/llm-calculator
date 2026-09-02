@@ -1,0 +1,43 @@
+{
+  "name": "gpt-oss-120b-h100-vllm-mxfp4",
+  "request": {
+    "model": "openai/gpt-oss-120b",
+    "gpu": "h100-sxm-80",
+    "engine": "vllm",
+    "tp": 2,
+    "context": 32768,
+    "concurrency": 64,
+    "quant": "mxfp4"
+  },
+  "expected": {
+    "weightBytes": 65248893184,
+    "weightMethod": "measured",
+    "totalParams": 116789048640,
+    "weightBytesPerDevice": 32624446592,
+    "kvPerTokenBytesPerDevice": 36864,
+    "kvBytesPerDevice": 38805700608,
+    "activationBytes": 283115520,
+    "overheadTotalBytes": 2427197258.24,
+    "usableVramBytes": 85555748536.32,
+    "availableKvBytes": 41948529832.448,
+    "numBlocks": 71120,
+    "maxTokens": 1137920,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "--tensor-parallel-size 2",
+      "--max-model-len 32768",
+      "--max-num-seqs 64",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.05040296336233973,
+    "decodeTokensPerSecond": 1269.76661153657,
+    "prefillFlops": 103610135347200,
+    "ttftSeconds": 0.11905208177469752,
+    "bound": "compute"
+  }
+}

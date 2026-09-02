@@ -1,0 +1,40 @@
+{
+  "name": "llama31-8b-rtx4090-llamacpp-q4",
+  "request": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "gpu": "rtx4090-24",
+    "engine": "llamacpp",
+    "quant": "gguf:Q4_K_M",
+    "context": 8192,
+    "concurrency": 4
+  },
+  "expected": {
+    "weightBytes": 4868345881.599999,
+    "weightMethod": "derived",
+    "totalParams": 8030261248,
+    "weightBytesPerDevice": 4868345881.599999,
+    "kvPerTokenBytesPerDevice": 131072,
+    "kvBytesPerDevice": 4294967296,
+    "activationBytes": 738197504,
+    "overheadTotalBytes": 1682852659.712,
+    "usableVramBytes": 25666724560.896,
+    "availableKvBytes": 16956637807.206402,
+    "numBlocks": 0,
+    "maxTokens": 129360,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "-c 32768",
+      "-np 4",
+      "-ngl 99",
+      "-b 8192"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.013499432048840049,
+    "decodeTokensPerSecond": 296.3087621411231,
+    "prefillFlops": 149159986331648,
+    "ttftSeconds": 2.006456636153457,
+    "bound": "compute"
+  }
+}

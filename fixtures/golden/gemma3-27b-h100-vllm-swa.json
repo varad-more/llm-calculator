@@ -1,0 +1,49 @@
+{
+  "name": "gemma3-27b-h100-vllm-swa",
+  "request": {
+    "model": "google/gemma-3-27b-it",
+    "gpu": "h100-sxm-80",
+    "engine": "vllm",
+    "context": 65536,
+    "concurrency": 32,
+    "avgSeqLen": 16384
+  },
+  "expected": {
+    "weightBytes": 54017327616,
+    "weightMethod": "derived",
+    "totalParams": 27008663808,
+    "weightBytesPerDevice": 54017327616,
+    "kvPerTokenBytesPerDevice": 507904,
+    "kvBytesPerDevice": 56908316672,
+    "activationBytes": 1056964608,
+    "overheadTotalBytes": 3056039700.48,
+    "usableVramBytes": 85555748536.32,
+    "availableKvBytes": 19926806366.208,
+    "numBlocks": 2452,
+    "maxTokens": 39232,
+    "fits": false,
+    "autofix": {
+      "maxModelLen": 131072,
+      "maxNumSeqs": 11
+    },
+    "warningCodes": [
+      "infeasible",
+      "measured_weights_unusable",
+      "vision_tower_excluded"
+    ],
+    "flags": [
+      "--tensor-parallel-size 1",
+      "--max-model-len 131072",
+      "--max-num-seqs 11",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.1457160086065724,
+    "decodeTokensPerSecond": 219.60524657519795,
+    "prefillFlops": 451580918759424,
+    "ttftSeconds": 1.01426435496131,
+    "bound": "compute"
+  }
+}

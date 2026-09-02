@@ -1,0 +1,41 @@
+{
+  "name": "llama31-8b-h100-sglang",
+  "request": {
+    "model": "meta-llama/Llama-3.1-8B-Instruct",
+    "gpu": "h100-sxm-80",
+    "engine": "sglang",
+    "context": 16384,
+    "concurrency": 64,
+    "avgSeqLen": 4096
+  },
+  "expected": {
+    "weightBytes": 16060556376,
+    "weightMethod": "measured",
+    "totalParams": 8030261248,
+    "weightBytesPerDevice": 16060556376,
+    "kvPerTokenBytesPerDevice": 131072,
+    "kvBytesPerDevice": 34359738368,
+    "activationBytes": 738197504,
+    "overheadTotalBytes": 2004587173.6,
+    "usableVramBytes": 85555748536.32,
+    "availableKvBytes": 60939617306.688,
+    "numBlocks": 29058,
+    "maxTokens": 464928,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "--tp 1",
+      "--context-length 16384",
+      "--max-running-requests 64",
+      "--mem-fraction-static 0.59",
+      "--chunked-prefill-size 8192"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.022659087284552754,
+    "decodeTokensPerSecond": 2824.473872062373,
+    "prefillFlops": 149159986331648,
+    "ttftSeconds": 0.33501782524009616,
+    "bound": "compute"
+  }
+}

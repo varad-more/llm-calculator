@@ -1,0 +1,47 @@
+{
+  "name": "qwen25-7b-h100-vllm-prefixcache",
+  "request": {
+    "model": "Qwen/Qwen2.5-7B-Instruct",
+    "gpu": "h100-sxm-80",
+    "engine": "vllm",
+    "context": 32768,
+    "concurrency": 128,
+    "avgSeqLen": 8192,
+    "prefixCache": {
+      "enabled": true,
+      "hitRate": 0.8,
+      "sharedPrefixTokens": 4096
+    }
+  },
+  "expected": {
+    "weightBytes": 15231271888,
+    "weightMethod": "measured",
+    "totalParams": 7615487488,
+    "weightBytesPerDevice": 15231271888,
+    "kvPerTokenBytesPerDevice": 57344,
+    "kvBytesPerDevice": 36406558720,
+    "activationBytes": 855638016,
+    "overheadTotalBytes": 2219922902.08,
+    "usableVramBytes": 85555748536.32,
+    "availableKvBytes": 59548978892.608,
+    "numBlocks": 64903,
+    "maxTokens": 1038448,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "--tensor-parallel-size 1",
+      "--max-model-len 32768",
+      "--max-num-seqs 128",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.034087937411275526,
+    "decodeTokensPerSecond": 3754.993986748534,
+    "prefillFlops": 138241164443648,
+    "ttftSeconds": 0.3104938221675269,
+    "bound": "compute"
+  }
+}

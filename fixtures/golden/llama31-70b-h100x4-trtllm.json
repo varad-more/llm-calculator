@@ -1,0 +1,44 @@
+{
+  "name": "llama31-70b-h100x4-trtllm",
+  "request": {
+    "model": "meta-llama/Llama-3.1-70B-Instruct",
+    "gpu": "h100-sxm-80",
+    "engine": "trtllm",
+    "tp": 4,
+    "context": 16384,
+    "concurrency": 32,
+    "quant": "fp8"
+  },
+  "expected": {
+    "weightBytes": 72656371712,
+    "weightMethod": "derived",
+    "totalParams": 70553706496,
+    "weightBytesPerDevice": 18164092928,
+    "kvPerTokenBytesPerDevice": 81920,
+    "kvBytesPerDevice": 42949672960,
+    "activationBytes": 369098752,
+    "overheadTotalBytes": 2157076889.6,
+    "usableVramBytes": 85555748536.32,
+    "availableKvBytes": 59005560987.64801,
+    "numBlocks": 45017,
+    "maxTokens": 720272,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [
+      "trtllm_build_time_budget"
+    ],
+    "flags": [
+      "--max_batch_size 32",
+      "--max_seq_len 16384",
+      "--max_num_tokens 8192",
+      "--tp_size 4",
+      "--kv_cache_free_gpu_memory_fraction 0.90"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.028024992649547248,
+    "decodeTokensPerSecond": 1141.837944443385,
+    "prefillFlops": 1243912857452544,
+    "ttftSeconds": 0.37478085511759734,
+    "bound": "compute"
+  }
+}

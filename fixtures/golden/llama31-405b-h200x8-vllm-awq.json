@@ -1,0 +1,44 @@
+{
+  "name": "llama31-405b-h200x8-vllm-awq",
+  "request": {
+    "model": "meta-llama/Llama-3.1-405B-Instruct",
+    "gpu": "h200-sxm-141",
+    "engine": "vllm",
+    "tp": 8,
+    "context": 16384,
+    "concurrency": 32,
+    "quant": "awq-int4"
+  },
+  "expected": {
+    "weightBytes": 217081610240,
+    "weightMethod": "derived",
+    "totalParams": 405853388800,
+    "weightBytesPerDevice": 27135201280,
+    "kvPerTokenBytesPerDevice": 64512,
+    "kvBytesPerDevice": 33822867456,
+    "activationBytes": 352321536,
+    "overheadTotalBytes": 2319386296.32,
+    "usableVramBytes": 150792006795.264,
+    "availableKvBytes": 106258218539.4176,
+    "numBlocks": 102944,
+    "maxTokens": 1647104,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [],
+    "flags": [
+      "--tensor-parallel-size 8",
+      "--max-model-len 16384",
+      "--max-num-seqs 32",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--quantization awq",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.019859813629278314,
+    "decodeTokensPerSecond": 1611.2940734158767,
+    "prefillFlops": 6926578852298752,
+    "ttftSeconds": 2.038615519761813,
+    "bound": "compute"
+  }
+}

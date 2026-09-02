@@ -1,0 +1,36 @@
+name: ci
+
+on:
+  push: { branches: [main] }
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: 10 }
+      - uses: actions/setup-node@v4
+        with: { node-version: '22.18', cache: pnpm }
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pnpm install --frozen-lockfile
+
+      # data/ -> generated.ts and _generated.py; a diff here means someone edited data
+      # without running `pnpm gen`.
+      - run: pnpm gen
+      - run: git diff --exit-code -- packages/core/src/generated.ts python/llmsize/_generated.py docs/ASSUMPTIONS.md docs/HARDWARE.md
+
+      - run: pnpm typecheck
+      - run: node --experimental-strip-types --test packages/core/test/*.test.ts validation/*.test.ts
+      - run: python3 python/tests/test_golden.py
+
+      # Golden fixtures are the TS<->Python contract; regenerating must be a no-op.
+      - run: pnpm goldens
+      - run: git diff --exit-code -- fixtures/golden
+
+      # The credibility gate: every contributed engine log must stay inside tolerance.
+      - run: pnpm validate -- --check
+
+      - run: pnpm build

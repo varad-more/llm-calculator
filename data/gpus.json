@@ -1,0 +1,151 @@
+{
+  "$schema": "./gpus.schema.json",
+  "_note": "All TFLOPS are DENSE tensor-core figures. Vendor datasheets often headline the 2:1 structured-sparsity number (2x dense); those are excluded here and `sparsity_excluded` asserts it. `vramBytes` is nominal capacity; the driver reserves a slice of it (see assumptions: driver_reserved_vram_fraction).",
+  "gpus": [
+    {
+      "id": "h100-sxm-80",
+      "name": "NVIDIA H100 SXM5 80GB",
+      "vendor": "nvidia",
+      "vramBytes": 85899345920,
+      "memoryType": "HBM3",
+      "memBandwidthBytesPerSec": 3352000000000,
+      "tflopsDense": { "fp32": 67, "tf32": 494.7, "fp16": 989.4, "bf16": 989.4, "fp8": 1978.9, "int8": 1978.9 },
+      "interconnect": { "kind": "nvlink4", "bidirectionalBytesPerSec": 900000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://resources.nvidia.com/en-us-tensor-core/nvidia-tensor-core-gpu-datasheet"
+    },
+    {
+      "id": "h100-pcie-80",
+      "name": "NVIDIA H100 PCIe 80GB",
+      "vendor": "nvidia",
+      "vramBytes": 85899345920,
+      "memoryType": "HBM2e",
+      "memBandwidthBytesPerSec": 2000000000000,
+      "tflopsDense": { "fp32": 51, "tf32": 378, "fp16": 756.5, "bf16": 756.5, "fp8": 1513, "int8": 1513 },
+      "interconnect": { "kind": "nvlink-bridge", "bidirectionalBytesPerSec": 600000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://resources.nvidia.com/en-us-tensor-core/nvidia-tensor-core-gpu-datasheet"
+    },
+    {
+      "id": "h200-sxm-141",
+      "name": "NVIDIA H200 SXM 141GB",
+      "vendor": "nvidia",
+      "vramBytes": 151397597184,
+      "memoryType": "HBM3e",
+      "memBandwidthBytesPerSec": 4800000000000,
+      "tflopsDense": { "fp32": 67, "tf32": 494.7, "fp16": 989.4, "bf16": 989.4, "fp8": 1978.9, "int8": 1978.9 },
+      "interconnect": { "kind": "nvlink4", "bidirectionalBytesPerSec": 900000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://resources.nvidia.com/en-us-data-center-overview/hpc-datasheet-sc23-h200"
+    },
+    {
+      "id": "b200-sxm-192",
+      "name": "NVIDIA B200 SXM 192GB",
+      "vendor": "nvidia",
+      "vramBytes": 206158430208,
+      "memoryType": "HBM3e",
+      "memBandwidthBytesPerSec": 8000000000000,
+      "tflopsDense": { "fp32": 80, "tf32": 1100, "fp16": 2250, "bf16": 2250, "fp8": 4500, "int8": 4500, "fp4": 9000 },
+      "interconnect": { "kind": "nvlink5", "bidirectionalBytesPerSec": 1800000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://resources.nvidia.com/en-us-blackwell-architecture/datasheet"
+    },
+    {
+      "id": "a100-sxm-80",
+      "name": "NVIDIA A100 SXM4 80GB",
+      "vendor": "nvidia",
+      "vramBytes": 85899345920,
+      "memoryType": "HBM2e",
+      "memBandwidthBytesPerSec": 2039000000000,
+      "tflopsDense": { "fp32": 19.5, "tf32": 156, "fp16": 312, "bf16": 312, "int8": 624 },
+      "interconnect": { "kind": "nvlink3", "bidirectionalBytesPerSec": 600000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf"
+    },
+    {
+      "id": "a100-pcie-80",
+      "name": "NVIDIA A100 PCIe 80GB",
+      "vendor": "nvidia",
+      "vramBytes": 85899345920,
+      "memoryType": "HBM2e",
+      "memBandwidthBytesPerSec": 1935000000000,
+      "tflopsDense": { "fp32": 19.5, "tf32": 156, "fp16": 312, "bf16": 312, "int8": 624 },
+      "interconnect": { "kind": "nvlink-bridge", "bidirectionalBytesPerSec": 600000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf"
+    },
+    {
+      "id": "a100-sxm-40",
+      "name": "NVIDIA A100 SXM4 40GB",
+      "vendor": "nvidia",
+      "vramBytes": 42949672960,
+      "memoryType": "HBM2",
+      "memBandwidthBytesPerSec": 1555000000000,
+      "tflopsDense": { "fp32": 19.5, "tf32": 156, "fp16": 312, "bf16": 312, "int8": 624 },
+      "interconnect": { "kind": "nvlink3", "bidirectionalBytesPerSec": 600000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf"
+    },
+    {
+      "id": "l40s-48",
+      "name": "NVIDIA L40S 48GB",
+      "vendor": "nvidia",
+      "vramBytes": 51539607552,
+      "memoryType": "GDDR6",
+      "memBandwidthBytesPerSec": 864000000000,
+      "tflopsDense": { "fp32": 91.6, "tf32": 183, "fp16": 362.05, "bf16": 362.05, "fp8": 733, "int8": 733 },
+      "interconnect": { "kind": "pcie5", "bidirectionalBytesPerSec": 64000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://resources.nvidia.com/en-us-l40s/l40s-datasheet-28413"
+    },
+    {
+      "id": "l4-24",
+      "name": "NVIDIA L4 24GB",
+      "vendor": "nvidia",
+      "vramBytes": 25769803776,
+      "memoryType": "GDDR6",
+      "memBandwidthBytesPerSec": 300000000000,
+      "tflopsDense": { "fp32": 30.3, "tf32": 60, "fp16": 121, "bf16": 121, "fp8": 242, "int8": 242 },
+      "interconnect": { "kind": "pcie4", "bidirectionalBytesPerSec": 32000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://resources.nvidia.com/en-us-l4/l4-datasheet"
+    },
+    {
+      "id": "a10g-24",
+      "name": "NVIDIA A10G 24GB",
+      "vendor": "nvidia",
+      "vramBytes": 25769803776,
+      "memoryType": "GDDR6",
+      "memBandwidthBytesPerSec": 600000000000,
+      "tflopsDense": { "fp32": 31.5, "tf32": 62.5, "fp16": 125, "bf16": 125, "int8": 250 },
+      "interconnect": { "kind": "pcie4", "bidirectionalBytesPerSec": 32000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://d1.awsstatic.com/product-marketing/ec2/NVIDIA_AWS_A10G_DataSheet_FINAL_02_17_2022.pdf"
+    },
+    {
+      "id": "rtx4090-24",
+      "name": "NVIDIA GeForce RTX 4090 24GB",
+      "vendor": "nvidia",
+      "vramBytes": 25769803776,
+      "memoryType": "GDDR6X",
+      "memBandwidthBytesPerSec": 1008000000000,
+      "tflopsDense": { "fp32": 82.6, "tf32": 82.6, "fp16": 165.2, "bf16": 165.2, "fp8": 660.6, "int8": 660.6 },
+      "interconnect": { "kind": "pcie4", "bidirectionalBytesPerSec": 32000000000 },
+      "sparsity_excluded": true,
+      "notes": "fp16/bf16 figure is with FP32 accumulate, which is what inference kernels use. FP16-accumulate peaks at 330.3 dense but is not the serving path.",
+      "source_url": "https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf"
+    },
+    {
+      "id": "mi300x-192",
+      "name": "AMD Instinct MI300X 192GB",
+      "vendor": "amd",
+      "vramBytes": 206158430208,
+      "memoryType": "HBM3",
+      "memBandwidthBytesPerSec": 5300000000000,
+      "tflopsDense": { "fp32": 163.4, "tf32": 653.7, "fp16": 1307.4, "bf16": 1307.4, "fp8": 2614.9, "int8": 2614.9 },
+      "interconnect": { "kind": "infinity-fabric", "bidirectionalBytesPerSec": 896000000000 },
+      "sparsity_excluded": true,
+      "source_url": "https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/data-sheets/amd-instinct-mi300x-data-sheet.pdf"
+    }
+  ]
+}

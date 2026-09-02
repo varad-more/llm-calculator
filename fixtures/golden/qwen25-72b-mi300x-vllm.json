@@ -1,0 +1,50 @@
+{
+  "name": "qwen25-72b-mi300x-vllm",
+  "request": {
+    "model": "Qwen/Qwen2.5-72B-Instruct",
+    "gpu": "mi300x-192",
+    "engine": "vllm",
+    "context": 32768,
+    "concurrency": 32,
+    "avgSeqLen": 8192,
+    "assume": {
+      "mbu_decode": 0.55
+    }
+  },
+  "expected": {
+    "weightBytes": 145412519312,
+    "weightMethod": "measured",
+    "totalParams": 72705384448,
+    "weightBytesPerDevice": 145412519312,
+    "kvPerTokenBytesPerDevice": 327680,
+    "kvBytesPerDevice": 85899345920,
+    "activationBytes": 1505755136,
+    "overheadTotalBytes": 5327611440.96,
+    "usableVramBytes": 205333796487.168,
+    "availableKvBytes": 34060286085.49121,
+    "numBlocks": 6496,
+    "maxTokens": 103936,
+    "fits": false,
+    "autofix": {
+      "maxModelLen": 32768,
+      "maxNumSeqs": 12
+    },
+    "warningCodes": [
+      "infeasible"
+    ],
+    "flags": [
+      "--tensor-parallel-size 1",
+      "--max-model-len 32768",
+      "--max-num-seqs 12",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.07849757072555494,
+    "decodeTokensPerSecond": 407.6559274920641,
+    "prefillFlops": 1279165949018112,
+    "ttftSeconds": 2.1742320619688136,
+    "bound": "compute"
+  }
+}

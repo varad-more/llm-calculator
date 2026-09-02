@@ -1,0 +1,82 @@
+{
+  "_note": "Every empirical constant in the model lives here. Each entry is user-overridable at the API, CLI (--assume key=value) and UI layer. `confidence` is honest: low means we could not find a primary source and the value is a community-reported ballpark.",
+  "assumptions": {
+    "driver_reserved_vram_fraction": {
+      "value": 0.004,
+      "unit": "fraction",
+      "rationale": "nvidia-smi reports slightly less total memory than the nominal capacity (ECC/driver/page tables). e.g. an 80GB H100 reports ~81559 MiB of 81920 MiB nominal (0.44%).",
+      "source_url": "https://forums.developer.nvidia.com/t/why-does-nvidia-smi-report-less-memory-than-the-gpu-has/64165",
+      "confidence": "medium"
+    },
+    "cuda_context_bytes": {
+      "value": 536870912,
+      "unit": "bytes",
+      "rationale": "CUDA context + cuBLAS/cuDNN workspaces + NVML per process, before any model load. vLLM reports this as part of 'non-torch memory'; commonly 0.3-0.9 GiB depending on driver and CUDA version.",
+      "source_url": "https://github.com/vllm-project/vllm/blob/main/vllm/worker/worker.py",
+      "confidence": "low"
+    },
+    "nccl_buffer_bytes_per_rank": {
+      "value": 536870912,
+      "unit": "bytes",
+      "rationale": "NCCL communicator buffers + CUDA IPC handles per rank when TP>1. Driven by NCCL_BUFFSIZE (default 4MiB per channel) times channels, plus graph-captured comm buffers. 0.5 GiB is the commonly observed delta between TP=1 and TP=2 non-torch memory.",
+      "source_url": "https://docs.nvidia.com/deeplearning/nccl/user-guide/docs/env.html",
+      "confidence": "low"
+    },
+    "cudagraph_base_bytes": {
+      "value": 268435456,
+      "unit": "bytes",
+      "rationale": "Fixed cost of CUDA graph capture pools in vLLM when enforce_eager=False.",
+      "source_url": "https://docs.vllm.ai/en/latest/configuration/optimization.html",
+      "confidence": "low"
+    },
+    "cudagraph_bytes_per_captured_size": {
+      "value": 8388608,
+      "unit": "bytes",
+      "rationale": "Per captured batch size, vLLM holds graph node structures and static input/output buffers. vLLM's default capture list has ~35 sizes and total graph memory is typically 1-3 GiB.",
+      "source_url": "https://github.com/vllm-project/vllm/blob/main/vllm/config/compilation.py",
+      "confidence": "low"
+    },
+    "prefill_activation_multiplier": {
+      "value": 4,
+      "unit": "count",
+      "rationale": "Number of live hidden-size-shaped activation buffers during a prefill chunk (residual stream, qkv projection output, attention output, plus one transient). Flash-attention avoids materialising the S x S score matrix, so the quadratic term is excluded.",
+      "source_url": "https://arxiv.org/abs/2205.14135",
+      "confidence": "medium"
+    },
+    "allocator_fragmentation_fraction": {
+      "value": 0.02,
+      "unit": "fraction",
+      "rationale": "PyTorch caching allocator holds reserved-but-unallocated blocks. vLLM's profiling run measures peak reserved, not peak allocated, so a small slack remains.",
+      "source_url": "https://pytorch.org/docs/stable/notes/cuda.html#memory-management",
+      "confidence": "low"
+    },
+    "mbu_decode": {
+      "value": 0.65,
+      "unit": "fraction",
+      "rationale": "Model Bandwidth Utilisation achieved by a well-tuned decode kernel on a modern engine. Databricks measured 0.55-0.72 across model sizes on A100/H100.",
+      "source_url": "https://www.databricks.com/blog/llm-inference-performance-engineering-best-practices",
+      "confidence": "medium"
+    },
+    "mfu_prefill": {
+      "value": 0.45,
+      "unit": "fraction",
+      "rationale": "Model FLOPs Utilisation for compute-bound prefill. PaLM reported 0.46 MFU for training; large-batch prefill lands in a similar band, lower for small hidden sizes.",
+      "source_url": "https://arxiv.org/abs/2204.02311",
+      "confidence": "medium"
+    },
+    "quant_group_size": {
+      "value": 128,
+      "unit": "count",
+      "rationale": "Default group size for GPTQ/AWQ int4 packing. Each group carries a scale (and a zero point for asymmetric schemes).",
+      "source_url": "https://arxiv.org/abs/2306.00978",
+      "confidence": "high"
+    },
+    "interconnect_efficiency": {
+      "value": 0.7,
+      "unit": "fraction",
+      "rationale": "Fraction of peak NVLink/PCIe bandwidth achieved by NCCL all-reduce at the message sizes typical of TP (a few MiB).",
+      "source_url": "https://github.com/NVIDIA/nccl-tests",
+      "confidence": "low"
+    }
+  }
+}

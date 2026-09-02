@@ -1,0 +1,60 @@
+name: Validation log
+description: Contribute a real engine startup log so a (model, GPU, engine) triple stops being a guess
+title: "validation: <model> on <gpu> with <engine>"
+labels: [validation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This is the single most valuable contribution to this project. Every number we print is
+        **predicted** until someone with the hardware pastes what the engine actually reported.
+        Nothing synthetic is ever accepted — only copy-paste from a machine that ran the command.
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: The exact Hugging Face repo id you served.
+      placeholder: meta-llama/Llama-3.1-8B-Instruct
+    validations: { required: true }
+  - type: input
+    id: gpu
+    attributes:
+      label: GPU
+      description: Exact SKU, and how many. `nvidia-smi -L` output is ideal.
+      placeholder: 1x NVIDIA H100 80GB HBM3 (SXM)
+    validations: { required: true }
+  - type: dropdown
+    id: engine
+    attributes:
+      label: Engine
+      options: [vllm, sglang, trtllm, llamacpp]
+    validations: { required: true }
+  - type: input
+    id: version
+    attributes:
+      label: Engine version
+      description: "`pip show vllm | head -2`, or the container tag."
+      placeholder: "0.8.5"
+    validations: { required: true }
+  - type: textarea
+    id: command
+    attributes:
+      label: The exact command you ran
+      render: shell
+    validations: { required: true }
+  - type: textarea
+    id: log
+    attributes:
+      label: Startup log, verbatim
+      description: |
+        From model loading through the KV cache line. Do not trim, summarise or reformat —
+        the parser reads the engine's own numbers out of it.
+        For vLLM that means the "Memory profiling takes ..." block and "GPU KV cache size: ... tokens".
+        For SGLang, the "KV Cache is allocated" line and "load_weight_end".
+      render: text
+    validations: { required: true }
+  - type: textarea
+    id: notes
+    attributes:
+      label: Anything unusual
+      description: Other processes on the card, MIG, a non-default NCCL config, a patched build.

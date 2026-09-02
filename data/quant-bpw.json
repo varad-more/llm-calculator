@@ -1,0 +1,36 @@
+{
+  "_note": "Effective bits-per-weight. GGUF k-quant values are MEASURED over a whole LLaMA-7B file (all tensors, mixed precision inside the scheme), not the nominal bit width of the block format. Non-GGUF schemes carry a tensorPolicy instead, because their overhead is computed analytically from group size.",
+  "gguf": {
+    "_source_url": "https://github.com/ggml-org/llama.cpp/pull/1684",
+    "bpw": {
+      "Q2_K": 3.35, "Q3_K_S": 3.5, "Q3_K_M": 3.89, "Q3_K_L": 4.27,
+      "Q4_0": 4.55, "Q4_1": 5.0, "Q4_K_S": 4.58, "Q4_K_M": 4.85,
+      "Q5_0": 5.54, "Q5_1": 6.0, "Q5_K_S": 5.52, "Q5_K_M": 5.69,
+      "Q6_K": 6.59, "Q8_0": 8.5, "F16": 16.0
+    }
+  },
+  "schemes": {
+    "fp32":     { "bits": 32, "kind": "dense",    "tensorPolicy": {} },
+    "fp16":     { "bits": 16, "kind": "dense",    "tensorPolicy": {} },
+    "bf16":     { "bits": 16, "kind": "dense",    "tensorPolicy": {} },
+    "fp8":      { "bits": 8,  "kind": "dense",    "tensorPolicy": { "embedding": 16, "lm_head": 16, "norm": 16 },
+                  "scaleBitsPerTensor": 32,
+                  "source_url": "https://docs.vllm.ai/en/latest/features/quantization/fp8.html" },
+    "int8":     { "bits": 8,  "kind": "grouped",  "groupSize": 128, "scaleBits": 16, "zeroBits": 0,
+                  "tensorPolicy": { "embedding": 16, "lm_head": 16, "norm": 16 },
+                  "source_url": "https://arxiv.org/abs/2211.10438" },
+    "awq-int4": { "bits": 4,  "kind": "grouped",  "groupSize": 128, "scaleBits": 16, "zeroBits": 4,
+                  "tensorPolicy": { "embedding": 16, "lm_head": 16, "norm": 16 },
+                  "source_url": "https://arxiv.org/abs/2306.00978" },
+    "gptq-int4":{ "bits": 4,  "kind": "grouped",  "groupSize": 128, "scaleBits": 16, "zeroBits": 4,
+                  "tensorPolicy": { "embedding": 16, "lm_head": 16, "norm": 16 },
+                  "source_url": "https://arxiv.org/abs/2210.17323" },
+    "mxfp4":    { "bits": 4,  "kind": "grouped",  "groupSize": 32,  "scaleBits": 8,  "zeroBits": 0,
+                  "tensorPolicy": { "embedding": 16, "lm_head": 16, "norm": 16 },
+                  "source_url": "https://www.opencompute.org/documents/ocp-microscaling-formats-mx-v1-0-spec-final-pdf" }
+  },
+  "kvDtypeBits": {
+    "_note": "fp8 KV in vLLM stores E4M3 elements plus a per-tensor scale; the per-token cost is the element width.",
+    "fp32": 32, "fp16": 16, "bf16": 16, "fp8": 8, "fp8_e5m2": 8, "fp8_e4m3": 8, "int8": 8
+  }
+}

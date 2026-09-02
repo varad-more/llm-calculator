@@ -1,0 +1,25 @@
+{
+  "name": "llmsize-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.28.2",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "scripts": {
+    "gen": "node scripts/gen-data.mjs && node scripts/gen-docs.mjs",
+    "fetch-models": "node scripts/fetch-models.mjs",
+    "test": "pnpm gen && node --experimental-strip-types --test packages/core/test/*.test.ts validation/*.test.ts && pnpm test:py",
+    "test:py": "python3 python/tests/test_golden.py",
+    "validate": "node --experimental-strip-types scripts/validate.mjs",
+    "goldens": "node --experimental-strip-types scripts/gen-goldens.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "pnpm gen && pnpm -F @llmsize/core build && pnpm -F @llmsize/web build",
+    "dev": "pnpm -F @llmsize/web dev"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^5.7.2",
+    "yaml": "^2.9.0"
+  }
+}

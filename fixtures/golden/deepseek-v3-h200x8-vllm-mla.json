@@ -1,0 +1,46 @@
+{
+  "name": "deepseek-v3-h200x8-vllm-mla",
+  "request": {
+    "model": "deepseek-ai/DeepSeek-V3",
+    "gpu": "h200-sxm-141",
+    "engine": "vllm",
+    "tp": 8,
+    "context": 32768,
+    "concurrency": 16,
+    "quant": "fp8"
+  },
+  "expected": {
+    "weightBytes": 688586727753,
+    "weightMethod": "measured",
+    "totalParams": 684489696256,
+    "weightBytesPerDevice": 86073340969.125,
+    "kvPerTokenBytesPerDevice": 70272,
+    "kvBytesPerDevice": 36842766336,
+    "activationBytes": 125829120,
+    "overheadTotalBytes": 3242206761.7825003,
+    "usableVramBytes": 150792006795.264,
+    "availableKvBytes": 46397258384.83011,
+    "numBlocks": 41265,
+    "maxTokens": 660240,
+    "fits": true,
+    "autofix": null,
+    "warningCodes": [
+      "mla_kv_replicated"
+    ],
+    "flags": [
+      "--tensor-parallel-size 8",
+      "--max-model-len 32768",
+      "--max-num-seqs 16",
+      "--gpu-memory-utilization 0.90",
+      "--max-num-batched-tokens 8192",
+      "--quantization fp8",
+      "--no-enable-prefix-caching"
+    ],
+    "label": "predicted",
+    "decodeStepSeconds": 0.0393603571554088,
+    "decodeTokensPerSecond": 406.5003764276392,
+    "prefillFlops": 894525606199296,
+    "ttftSeconds": 0.14546401395968353,
+    "bound": "compute"
+  }
+}
