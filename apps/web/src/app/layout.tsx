@@ -29,6 +29,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             <nav className="flex items-center gap-4 text-xs text-muted-foreground">
               <Link href="/" className="hover:text-foreground">Size a config</Link>
               <Link href="/fits/" className="hover:text-foreground">What fits my GPU</Link>
+              <Link href="/explained/" className="hover:text-foreground">How it works</Link>
             </nav>
             <a
               href="https://github.com/varad-more/llmsize"
