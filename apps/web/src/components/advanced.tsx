@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react'
 import {
   size, listModels, resolveModel, parameterCounts, loraSizing, speculativeThroughput,
-  emitSpeculativeFlags, planDisaggregated, gib, seconds, count,
+  emitSpeculativeFlags, planDisaggregated, gib, bytes as humanBytes, seconds, count,
   type SizingRequest, type SizingResult,
 } from '@llmsize/core'
 import { Field, Stat, CommandBlock } from '@/components/field'
@@ -131,8 +131,8 @@ export function MultiLora({ result }: { result: SizingResult }) {
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Stat label="Per adapter" value={gib(sizing.bytesPerAdapter)} sub={`${(sizing.paramsPerAdapter / 1e6).toFixed(1)}M params`} />
-        <Stat label="Resident, per GPU" value={gib(sizing.totalBytesPerDevice)} sub={`${maxLoras} slots at rank ${rank}`} />
+        <Stat label="Per adapter" value={humanBytes(sizing.bytesPerAdapter)} sub={`${(sizing.paramsPerAdapter / 1e6).toFixed(1)}M params`} />
+        <Stat label="Resident, per GPU" value={humanBytes(sizing.totalBytesPerDevice)} sub={`${maxLoras} slots at rank ${rank}`} />
         <Stat label="Free after adapters" value={gib(Math.max(0, p.freeBytes - sizing.totalBytesPerDevice))}
           tone={fits ? 'good' : 'bad'} sub={fits ? 'still fits' : 'over budget — lower --max-loras'} />
       </div>

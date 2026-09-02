@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import {
-  size, listGpus, listModels, normalizeConfig, gib, seconds, count,
+  size, listGpus, listModels, normalizeConfig, gib, bytes as humanBytes, seconds, count,
   IncompleteConfigError, type KvDtype, type QuantScheme, type EngineName, type SizingRequest,
 } from '@llmsize/core'
 import { resolveConfig, parsePasted, type ConfigSource } from '@/lib/hf'
@@ -15,7 +15,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
 import { Slider } from '@/components/ui/slider'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -318,7 +317,7 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
         <Card>
           <CardContent className="pt-6">
             <Tabs defaultValue="run">
-              <TabsList className="flex-wrap">
+              <TabsList className="h-auto flex-wrap">
                 <TabsTrigger value="run">Run it</TabsTrigger>
                 <TabsTrigger value="memory">Memory</TabsTrigger>
                 <TabsTrigger value="speculative">Speculative</TabsTrigger>
@@ -339,14 +338,14 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
                     <Row label="model weights (per GPU)" bytes={p.weightBytesPerDevice} />
                     <Row label="kv cache required" bytes={p.requiredKvBytes} />
                     <Row label="kv pool reserved by engine" bytes={p.availableKvBytes} />
-                    <Separator className="my-1" />
+                    <Rule />
                     <Row label="cuda context" bytes={p.overhead.cudaContextBytes} />
                     <Row label="nccl buffers" bytes={p.overhead.commBytes} />
                     <Row label="cuda graphs" bytes={p.overhead.graphBytes} />
                     <Row label="activation peak" bytes={p.overhead.activationBytes} />
                     <Row label="sampling logits" bytes={p.overhead.logitsBytes} />
                     <Row label="allocator slack" bytes={p.overhead.fragmentationBytes} />
-                    <Separator className="my-1" />
+                    <Rule />
                     <Row label="usable vram per GPU" bytes={p.usableVramBytes} />
                     <Row label="free" bytes={p.freeBytes} />
                   </tbody>
@@ -368,7 +367,17 @@ function Row({ label, bytes }: { label: string; bytes: number }) {
   return (
     <tr>
       <td className="py-0.5 font-sans text-muted-foreground">{label}</td>
-      <td className="py-0.5 text-right">{gib(bytes)}</td>
+      <td className="py-0.5 text-right">{humanBytes(bytes)}</td>
+    </tr>
+  )
+}
+
+function Rule() {
+  return (
+    <tr>
+      <td colSpan={2} className="py-1">
+        <div className="h-px bg-border" />
+      </td>
     </tr>
   )
 }
