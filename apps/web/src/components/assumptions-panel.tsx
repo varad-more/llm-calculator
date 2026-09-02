@@ -22,11 +22,11 @@ export function AssumptionsPanel({ values, onChange }: {
         return (
           <div key={key} className="grid grid-cols-[1fr_7rem] items-start gap-3">
             <div className="min-w-0">
-              <Label htmlFor={`assume-${key}`} className="font-mono text-xs">
-                {key}
+              <Label htmlFor={`assume-${key}`} className="flex-wrap gap-x-2 font-mono text-xs">
+                <span className="min-w-0 break-all">{key}</span>
                 <span
                   className={
-                    'ml-2 rounded px-1 py-0.5 text-[10px] font-medium ' +
+                    'rounded px-1 py-0.5 text-[10px] font-medium ' +
                     (a.confidence === 'high' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                       : a.confidence === 'medium' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                       : 'bg-red-500/10 text-red-600 dark:text-red-400')
