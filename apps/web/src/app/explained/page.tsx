@@ -60,6 +60,21 @@ function naiveKvBytes(spec: ModelSpec, tokens: number, dtypeBytes: number): numb
   return 2 * spec.numKeyValueHeads * spec.headDim * spec.numLayers * tokens * dtypeBytes
 }
 
+const MACHINE_MODELS = [
+  'meta-llama/Llama-3.2-3B-Instruct',
+  'meta-llama/Llama-3.1-8B-Instruct',
+  'meta-llama/Llama-3.1-70B-Instruct',
+  'meta-llama/Llama-3.1-405B-Instruct',
+]
+
+/**
+ * Bytes per parameter held for the whole of training under mixed-precision Adam:
+ * 2 (bf16 weights) + 2 (bf16 gradients) + 4 (fp32 master copy) + 4 + 4 (Adam m and v).
+ * From the ZeRO paper's own accounting; activations are on top of this and are not included.
+ */
+const TRAIN_BYTES_PER_PARAM = 2 + 2 + 4 + 4 + 4
+const ZERO_PAPER = 'https://arxiv.org/abs/1910.02054'
+
 const CTX = 32768
 const quant = quantData()
 const assumptions = defaultAssumptions()
@@ -82,10 +97,18 @@ const SECTIONS = [
   ['quantization', 'Quantization'],
   ['kv', 'The KV cache'],
   ['speed', 'Where the speed numbers come from'],
+  ['machine', 'RAM, disk and the rest of the machine'],
+  ['training', 'Training, which this tool does not size'],
   ['engines', 'What each engine does differently'],
   ['features', 'Serving features'],
   ['assumptions', 'The constants it rests on'],
 ] as const
+
+/** Whole GPUs of optimizer state, phrased so the count and its plural cannot disagree. */
+function trainGpus(id: string): string {
+  const n = Math.ceil((parameterCounts(specFor(id)).total * TRAIN_BYTES_PER_PARAM) / ex.usableVramBytes)
+  return `${n} GPU${n === 1 ? '' : 's'}`
+}
 
 function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
@@ -105,7 +128,7 @@ function Formula({ children }: { children: React.ReactNode }) {
 function Table({ head, children }: { head: string[]; children: React.ReactNode }) {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-[40rem] text-sm">
+      <table className="w-full min-w-[40rem] text-sm [&_td]:pr-6 [&_td:last-child]:pr-0 [&_th]:pr-6 [&_th:last-child]:pr-0">
         <thead className="text-left text-xs text-muted-foreground">
           <tr>
             {head.map((h) => (
@@ -428,6 +451,137 @@ tensor-parallel comm     t      = 2(n-1)/n x bytes / (link bandwidth x efficienc
           </p>
         </Section>
 
+        <Section id="machine" title="RAM, disk and the rest of the machine">
+          <p>
+            VRAM is the constraint that decides whether a model runs at all, so it gets the whole rest
+            of this page. But a machine that serves it also needs host memory, disk and enough compute
+            to hit your throughput target. <strong>The sizer models VRAM and compute; the host figures
+            below are rules of thumb with their sources, not predictions</strong> — they are here because
+            the question always comes up, not because this tool measures them.
+          </p>
+
+          <h3 className="pt-2 font-semibold">Checkpoint size, which sets both disk and load-time RAM</h3>
+          <p>
+            The bytes on disk are the same bytes the weights term computes — a checkpoint is just the
+            quantized parameters, plus a few MB of tokenizer and index JSON. Which makes disk the one
+            host requirement this tool does size, for free:
+          </p>
+          <Table head={['Model', 'Params', 'bf16 on disk', 'int4 on disk', 'Training state (16 B/param)']}>
+            {MACHINE_MODELS.map((id) => {
+              const m = specFor(id)
+              const p16 = parameterCounts(m).total
+              return (
+                <tr key={id} className="border-t">
+                  <td className="py-2 font-sans">{id.split('/')[1]}</td>
+                  <td className="py-2">{count(p16)}</td>
+                  <td className="py-2">{gib(weightBytes(m, { quant: 'bf16' }).totalBytes)}</td>
+                  <td className="py-2">{gib(weightBytes(m, { quant: 'awq-int4', preferMeasured: false }).totalBytes)}</td>
+                  <td className="py-2 text-muted-foreground">{gib(p16 * TRAIN_BYTES_PER_PARAM)}</td>
+                </tr>
+              )
+            })}
+          </Table>
+          <p className="text-xs text-muted-foreground">
+            Budget roughly <strong>2x the checkpoint</strong> of free disk for anything that converts or
+            builds: Hugging Face&rsquo;s cache keeps blobs and snapshot symlinks under one root, a GGUF
+            conversion needs source and output resident at once, and a TensorRT-LLM build writes an
+            engine plan file of its own next to the checkpoint it was built from.
+          </p>
+
+          <h3 className="pt-2 font-semibold">System RAM</h3>
+          <p>
+            Three separate demands, and only the first scales with the model:
+          </p>
+          <Formula>{`loading      safetensors are mmap'd, so the checkpoint pages through the OS page cache
+             -> plan for ~1x checkpoint of host memory during load, reclaimable after
+swap space   vLLM pins --swap-space (4 GiB per GPU by default) for preempted sequences
+runtime      one worker process per GPU: Python, CUDA runtime, NCCL, request buffers`}</Formula>
+          <p>
+            So a single-GPU 8B server wants tens of GiB, not hundreds; a TP=8 405B node wants the
+            checkpoint&rsquo;s worth of page cache during startup plus eight workers&rsquo; worth of
+            runtime. The failure mode is not slowness, it is the loader being OOM-killed part way
+            through, which looks like an unexplained crash before the engine ever logs a memory summary.
+          </p>
+          <p>
+            The exception that inverts all of this is <strong>CPU offload</strong>
+            (<span className="font-mono text-xs">--cpu-offload-gb</span>): host RAM stands in for VRAM,
+            and every offloaded byte crosses PCIe on every forward pass. Decode is already
+            bandwidth-bound, and PCIe is roughly two orders of magnitude slower than HBM, so this buys
+            &ldquo;it runs&rdquo; at the price of &ldquo;it is fast&rdquo;. Size it as a last resort,
+            not as a plan.
+          </p>
+
+          <h3 className="pt-2 font-semibold">Compute, and how many GPUs the traffic needs</h3>
+          <p>
+            One forward pass costs about <span className="font-mono text-xs">2</span> FLOPs per active
+            parameter per token — one multiply and one add. That gives the two numbers you actually
+            plan against:
+          </p>
+          <Formula>{`prefill FLOPs   ~ 2 x P_active x prompt_tokens   + attention   (compute-bound)
+decode  FLOPs   ~ 2 x P_active per token                     (but bandwidth-bound in practice)
+instances       = target tokens/sec / decode tokens/sec per instance`}</Formula>
+          <p>
+            Decode almost never hits the FLOPs ceiling: it reads far more bytes than it does arithmetic,
+            which is why the{' '}
+            <a href="#speed" className="underline underline-offset-2">roofline above</a> divides by
+            memory bandwidth rather than TFLOPS. Size the fleet from the decode throughput the sizer
+            reports for one instance, then check that prefill has the headroom to keep those instances
+            fed — that ratio is exactly what the disaggregation panel solves for.
+          </p>
+        </Section>
+
+        <Section id="training" title="Training, which this tool does not size">
+          <p>
+            <strong>llmsize is inference-only, deliberately.</strong> Nothing on this page or in the
+            sizer models a backward pass, and there is no training mode planned. But the memory
+            arithmetic is short, well documented and asked about constantly, so here it is with its
+            source — as documentation, not as a prediction this tool will make for you.
+          </p>
+          <p>
+            Inference holds one copy of the weights. Training holds four things, and the weights are the
+            smallest of them:
+          </p>
+          <Formula>{`weights          2 bytes/param    bf16
+gradients        2 bytes/param    bf16, one per weight
+master weights   4 bytes/param    fp32 copy the optimizer actually updates
+Adam m, v        8 bytes/param    two fp32 moments
+                ---------------
+                16 bytes/param    before a single activation is stored`}</Formula>
+          <p>
+            That is {TRAIN_BYTES_PER_PARAM / 2}x what the same model costs to serve at bf16 — the
+            accounting is straight out of the{' '}
+            <a href={ZERO_PAPER} target="_blank" rel="noreferrer" className="underline underline-offset-2">ZeRO paper</a>,
+            which exists because that multiple is what makes data-parallel training expensive. The last
+            column of the table above is this number; on {ex.input.gpu.name} cards it works out to{' '}
+            {trainGpus('meta-llama/Llama-3.1-8B-Instruct')} for an 8B model and{' '}
+            {trainGpus('meta-llama/Llama-3.1-70B-Instruct')} for a 70B, before activations, gradients in
+            flight, or any fragmentation.
+          </p>
+          <p>
+            <strong>Activations are the other half</strong>, and unlike inference they must be kept for
+            the whole forward pass so the backward pass can consume them. They scale with batch x
+            sequence length x hidden size x layers, which is why gradient checkpointing (recompute
+            instead of store) is standard: it trades roughly a third more compute for a large constant
+            factor of memory. Sizing that properly needs the recomputation strategy as an input, which
+            is a different tool from this one.
+          </p>
+          <p>
+            <strong>Fine-tuning is a different question from training.</strong> With LoRA the base
+            weights are frozen — no gradients, no optimizer states, and the base can even stay
+            quantized (QLoRA) — so the trainable footprint collapses to the adapters, which is the same{' '}
+            <span className="font-mono text-xs">r(m + n)</span> arithmetic the{' '}
+            <Link href="/" className="underline underline-offset-2">Multi-LoRA panel</Link> already
+            computes. If what you are actually sizing is a fine-tune rather than a pre-train, that panel
+            plus the inference numbers on this page will get you most of the way.
+          </p>
+          <p className="rounded-md border border-amber-500/40 bg-amber-500/5 p-3 text-xs">
+            Everything in this section is textbook arithmetic with a citation, not a modelled
+            prediction: no training figure is checked by the test suite, none of it is validated against
+            a real run, and the sizer will not emit a training command. Treat it as orientation, and
+            measure before you buy hardware on the strength of it.
+          </p>
+        </Section>
+
         <Section id="engines" title="What each engine does differently">
           <p>
             &ldquo;How much VRAM does it need&rdquo; has four different answers because four engines
@@ -525,13 +679,13 @@ ITL       = cycle_seconds / E[tokens]`}</Formula>
             {Object.entries(assumptions).map(([key, a]) => (
               <tr key={key} className="border-t align-top">
                 <td className="py-2 text-xs">{key}</td>
-                <td className="py-2 text-xs">
+                <td className="py-2 text-xs whitespace-nowrap">
                   {a.unit === 'bytes' ? humanBytes(a.value) : a.value}
                 </td>
                 <td className="py-2">
                   <span
                     className={
-                      'rounded px-1 py-0.5 text-[10px] font-medium ' +
+                      'inline-block rounded px-1 py-0.5 text-[10px] font-medium whitespace-nowrap ' +
                       (a.confidence === 'high' ? 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
                         : a.confidence === 'medium' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400'
                         : 'bg-red-500/10 text-red-600 dark:text-red-400')
