@@ -56,18 +56,33 @@ than sharing one. 20 real HF model snapshots, 12 sourced GPUs, every empirical c
 
 One sweep serves all three: #2 is the sweep filtered by an SLO, #1 is a column of it.
 
-- [ ] `data/instances.json` — AWS GPU instance catalogue. Price from the AWS pricing feed
+- [x] `data/instances.json` — AWS GPU instance catalogue. Price from the AWS pricing feed
       (`b0.p.awsstatic.com/pricing/2.0/...`), GPU count / host RAM / NVMe / network from the
       AWS accelerated-computing docs table. Every row carries `source_url` and `priceRetrieved`.
-- [ ] Fix first: GDDR6 datacenter cards (A10G, L4, L40S) ship with in-band ECC on, which eats
+- [x] Fix first: GDDR6 datacenter cards (A10G, L4, L40S) ship with in-band ECC on, which eats
       1/16 of the framebuffer. AWS documents 22 GiB of 24 and 44 GiB of 48. Without this the
       tool says "fits" on a g6e.xlarge when it does not. Regenerate goldens.
-- [ ] `packages/core/src/cost.ts` — `costPerMillionTokens`, `compareMachines`. Replicas, not
+- [x] `packages/core/src/cost.ts` — `costPerMillionTokens`, `compareMachines`. Replicas, not
       just TP: if the model fits on one GPU you run 8 replicas on a p5.48xlarge, you do not run
       TP=8. Aggregate throughput scales with replicas, latency does not.
-- [ ] `data.ts` — `listInstances` / `getInstance`.
-- [ ] docs/MATH.md `## Cost per token`, `## Machine search`; `cost.ts` into MATH_MODULES.
-- [ ] `data.test.ts` — every instance resolves its GPU, has a price, a source and a date.
-- [ ] Web: a "Machines" tab in the sizer. Columns: fits, layout, tok/s, TTFT, $/1M in, $/1M out.
+- [x] `data.ts` — `listInstances` / `getInstance`.
+- [x] docs/MATH.md `## Cost per token`, `## Machine search`; `cost.ts` into MATH_MODULES.
+- [x] `data.test.ts` — every instance resolves its GPU, has a price, a source and a date.
+- [x] Web: a "Machines" tab in the sizer. Columns: fits, layout, tok/s, TTFT, $/1M in, $/1M out.
       SLO inputs (max TTFT, min tok/s per user) filter it. Hourly rate editable per row.
-- [ ] `gen-docs.mjs` -> docs/INSTANCES.md.
+- [x] `gen-docs.mjs` -> docs/INSTANCES.md.
+
+**Review.**
+
+- The three features are one sweep. #2 is `compareMachines` with an `slo`, #1 is two of its
+  columns, #4 is the table. One core module, one component, no new page.
+- Two things were wrong before this feature and are fixed in it: GDDR6 cards were handed 1/16
+  more VRAM than they have, and the Python port ignored `reservedVramFraction`. Both are in
+  `tasks/lessons.md`.
+- The TP-vs-replicas claim in the first draft of `docs/MATH.md` was backwards. Measured, rewritten,
+  and the measurement is now a table in the doc so the next reader does not have to trust it.
+- Still no browser pass: the Chrome extension would not connect again. Verified by build, typecheck,
+  84 tests, golden parity across 16 fixtures, and by grepping the prerendered HTML for the tab.
+- Not done, deliberately: multi-node (p5.48xlarge x N with EFA), spot interruption rates, reserved
+  and savings-plan pricing, regions other than us-east-1, and GPUs whose datasheets we do not have
+  (g7/g7e, p6-b300, g4dn, p3). Each needs a source before it needs code.

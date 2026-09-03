@@ -14,6 +14,7 @@ import { Field, Stat, CommandBlock } from '@/components/field'
 import { Speculative, MultiLora, Disaggregated } from '@/components/advanced'
 import { ScalingCurve } from '@/components/scaling-curve'
 import { HostPanel } from '@/components/host-panel'
+import { Machines } from '@/components/machines'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -326,6 +327,7 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
                 <TabsTrigger value="memory">Memory</TabsTrigger>
                 <TabsTrigger value="scaling">Scaling</TabsTrigger>
                 <TabsTrigger value="host">Host</TabsTrigger>
+                <TabsTrigger value="machines">Machines</TabsTrigger>
                 <TabsTrigger value="speculative">Speculative</TabsTrigger>
                 <TabsTrigger value="lora">Multi-LoRA</TabsTrigger>
                 <TabsTrigger value="disagg">Disaggregated</TabsTrigger>
@@ -364,6 +366,10 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
 
               <TabsContent value="host" className="mt-4">
                 <HostPanel result={r} />
+              </TabsContent>
+
+              <TabsContent value="machines" className="mt-4">
+                <Machines req={req} />
               </TabsContent>
 
               <TabsContent value="speculative" className="mt-4"><Speculative req={req} result={r} /></TabsContent>

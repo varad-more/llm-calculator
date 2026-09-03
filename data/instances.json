@@ -1,0 +1,35 @@
+{
+  "_note": "AWS EC2 GPU instances, us-east-1, Linux, on-demand. Prices move: every row carries the date it was read, and the UI lets you replace the rate with your own (spot, savings plan, negotiated). Only the cheapest size at each (family, GPU count) is listed — a g5.16xlarge has the same single A10G as a g5.xlarge and costs four times as much, so it can never win on cost per token; pick a larger size when you need the vCPUs or the host RAM. Families whose GPU is not yet in data/gpus.json are omitted rather than guessed: g4dn (T4), p3 (V100), g7/g7e (RTX PRO 6000 Blackwell), p6-b300 (B300).",
+  "_price_source": "https://b0.p.awsstatic.com/pricing/2.0/meteredUnitMaps/ec2/USD/current/ec2-ondemand-without-sec-sel/US%20East%20(N.%20Virginia)/Linux/index.json",
+  "_spec_source": "https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html",
+  "instances": [
+    { "id": "g5.xlarge",        "provider": "aws", "gpu": "a10g-24",        "gpuCount": 1, "vcpus": 4,   "hostRamBytes": 17179869184,   "localDiskBytes": 250000000000,   "networkGbps": 2.5 },
+    { "id": "g5.12xlarge",      "provider": "aws", "gpu": "a10g-24",        "gpuCount": 4, "vcpus": 48,  "hostRamBytes": 206158430208,  "localDiskBytes": 3800000000000,  "networkGbps": 40 },
+    { "id": "g5.48xlarge",      "provider": "aws", "gpu": "a10g-24",        "gpuCount": 8, "vcpus": 192, "hostRamBytes": 824633720832,  "localDiskBytes": 7600000000000,  "networkGbps": 100 },
+    { "id": "g6.xlarge",        "provider": "aws", "gpu": "l4-24",          "gpuCount": 1, "vcpus": 4,   "hostRamBytes": 17179869184,   "localDiskBytes": 250000000000,   "networkGbps": 2.5 },
+    { "id": "g6.12xlarge",      "provider": "aws", "gpu": "l4-24",          "gpuCount": 4, "vcpus": 48,  "hostRamBytes": 206158430208,  "localDiskBytes": 3760000000000,  "networkGbps": 40 },
+    { "id": "g6.48xlarge",      "provider": "aws", "gpu": "l4-24",          "gpuCount": 8, "vcpus": 192, "hostRamBytes": 824633720832,  "localDiskBytes": 7520000000000,  "networkGbps": 100 },
+    { "id": "g6e.xlarge",       "provider": "aws", "gpu": "l40s-48",        "gpuCount": 1, "vcpus": 4,   "hostRamBytes": 34359738368,   "localDiskBytes": 250000000000,   "networkGbps": 2.5 },
+    { "id": "g6e.12xlarge",     "provider": "aws", "gpu": "l40s-48",        "gpuCount": 4, "vcpus": 48,  "hostRamBytes": 412316860416,  "localDiskBytes": 3800000000000,  "networkGbps": 100 },
+    { "id": "g6e.48xlarge",     "provider": "aws", "gpu": "l40s-48",        "gpuCount": 8, "vcpus": 192, "hostRamBytes": 1649267441664, "localDiskBytes": 7600000000000,  "networkGbps": 400 },
+    { "id": "p4d.24xlarge",     "provider": "aws", "gpu": "a100-sxm-40",    "gpuCount": 8, "vcpus": 96,  "hostRamBytes": 1236950581248, "localDiskBytes": 8000000000000,  "networkGbps": 400 },
+    { "id": "p4de.24xlarge",    "provider": "aws", "gpu": "a100-sxm-80",    "gpuCount": 8, "vcpus": 96,  "hostRamBytes": 1236950581248, "localDiskBytes": 8000000000000,  "networkGbps": 400 },
+    { "id": "p5.4xlarge",       "provider": "aws", "gpu": "h100-sxm-80",    "gpuCount": 1, "vcpus": 16,  "hostRamBytes": 274877906944,  "localDiskBytes": 3800000000000,  "networkGbps": 100 },
+    { "id": "p5.48xlarge",      "provider": "aws", "gpu": "h100-sxm-80",    "gpuCount": 8, "vcpus": 192, "hostRamBytes": 2199023255552, "localDiskBytes": 30400000000000, "networkGbps": 3200 },
+    { "id": "p5en.48xlarge",    "provider": "aws", "gpu": "h200-sxm-141",   "gpuCount": 8, "vcpus": 192, "hostRamBytes": 2199023255552, "localDiskBytes": 30400000000000, "networkGbps": 3200 },
+    { "id": "p6-b200.48xlarge", "provider": "aws", "gpu": "b200-sxm-192",   "gpuCount": 8, "vcpus": 192, "hostRamBytes": 2199023255552, "localDiskBytes": 30400000000000, "networkGbps": 3200 }
+  ],
+  "pricing": {
+    "region": "us-east-1",
+    "retrieved": "2026-09-02",
+    "basis": "on-demand, Linux, no pre-installed software",
+    "usdPerHour": {
+      "g5.xlarge": 1.006, "g5.12xlarge": 5.672, "g5.48xlarge": 16.288,
+      "g6.xlarge": 0.8048, "g6.12xlarge": 4.6016, "g6.48xlarge": 13.3504,
+      "g6e.xlarge": 1.861, "g6e.12xlarge": 10.49264, "g6e.48xlarge": 30.131180,
+      "p4d.24xlarge": 21.957642, "p4de.24xlarge": 27.447050,
+      "p5.4xlarge": 6.88, "p5.48xlarge": 55.04,
+      "p5en.48xlarge": 63.296, "p6-b200.48xlarge": 113.9328
+    }
+  }
+}

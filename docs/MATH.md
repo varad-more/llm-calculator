@@ -441,3 +441,65 @@ Given hardware, enumerate what runs on it: a cartesian sweep of (model, quant, K
 context, TP) through the same allocator, ranked by fit and then by \(\text{context} \times
 \text{tok/s}\). No heuristics and no scoring model — every row is a real plan with a real
 command attached.
+
+# Phase 5: what to rent
+
+## Cost per token
+
+A rented machine bills by the hour; an inference workload is priced per token. The bridge is
+the machine's own throughput:
+
+\[ \$_{1M} = \frac{P_{hour}}{T \cdot 3600} \times 10^{6} \]
+
+\(T\) is tokens/second for the side being priced — decode throughput gives the output-token
+price, prefill throughput the input-token price. The two differ by one to two orders of
+magnitude, which is exactly why every commercial API quotes them separately.
+
+The machine is billed whether or not it is busy, so this is the price at **full saturation**.
+It is a floor, not a forecast. A deployment running at 40% utilization pays 2.5x this, and the
+arithmetic is identical to raising \(P_{hour}\) by 2.5x — so a duty cycle belongs on the rate,
+not in this formula.
+
+Prices are a dated snapshot in [`data/instances.json`](../data/instances.json), on-demand and
+region-specific. They move. Override the rate with whatever you actually pay.
+
+## Machine search
+
+An \(N\)-GPU machine can be run as one \(TP=N\) server, or as
+
+\[ R = \frac{N}{TP} \]
+
+independent replicas behind a load balancer, each serving \(\lceil C / R \rceil\) of the
+\(C\) concurrent sequences, for a whole-machine throughput of \(T_{machine} = R \cdot
+T_{replica}\).
+
+Which layout wins is not a matter of taste; it falls out of the decode roofline. A step streams
+the weights resident on the device **once** and serves the entire batch from that one read.
+Tensor parallel divides that read by \(TP\). Replicas do not — each replica re-reads the whole
+model for its own slice of the batch. So at fixed total concurrency TP wins on throughput and
+on latency together, until the all-reduce term costs more than the read it saves:
+
+| 8x H100, Llama-3.1-8B fp8 | TP=1, R=8 | TP=2, R=4 | TP=4, R=2 | TP=8, R=1 |
+| --- | --- | --- | --- | --- |
+| C = 64 | 14,585 tok/s | 26,153 | 43,051 | **62,358** |
+| C = 1024 | 86,925 | 103,026 | 111,566 | **112,310** |
+| C = 4096 | does not fit | 120,777 | **121,212** | 116,997 |
+
+The crossover is real but it is a long way out — past a thousand concurrent sequences on this
+model — and it moves with model size, quantization and link speed. So the search tries every
+\(TP\) that divides \(N\) and reads the answer off the allocator, rather than encoding a rule
+of thumb that is right in one regime and wrong in the next.
+
+What this comparison does **not** price is why people still run replicas at low concurrency:
+blast radius, rolling restarts, and heterogeneous models sharing a box. Those are real and they
+are not throughput.
+
+TTFT and ITL are one replica's, since a request is served by exactly one replica. Tokens per
+second, and therefore price per token, are the whole machine's.
+
+The layout kept per machine is the cheapest per output token among those that fit and meet the
+SLO. When nothing meets it, the cheapest fitting layout is returned with the failing clauses
+attached, because "closest, and here is what it misses" beats an empty table.
+
+SLO clauses are latency only — TTFT and ITL. Throughput is not an SLO here; it is the thing
+being bought, and it shows up as the price.

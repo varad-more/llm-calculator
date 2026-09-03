@@ -1,6 +1,6 @@
 import { DATA } from './generated.ts'
 import { UnknownEntityError } from './errors.ts'
-import type { Assumptions, AssumptionOverrides, AssumptionKey, GpuSpec, QualityMeasurement, QuantScheme } from './types.ts'
+import type { Assumptions, AssumptionOverrides, AssumptionKey, GpuSpec, InstanceSpec, QualityMeasurement, QuantScheme } from './types.ts'
 
 /** All GPUs in data/gpus.json. */
 export function listGpus(): GpuSpec[] {
@@ -11,6 +11,19 @@ export function listGpus(): GpuSpec[] {
 export function getGpu(id: string): GpuSpec {
   const hit = (DATA.gpus as GpuSpec[]).find((g) => g.id === id)
   if (!hit) throw new UnknownEntityError('gpu', id, (DATA.gpus as GpuSpec[]).map((g) => g.id))
+  return hit
+}
+
+/** Every rentable machine in data/instances.json. */
+export function listInstances(): InstanceSpec[] {
+  return DATA.instances as InstanceSpec[]
+}
+
+/** Look up one instance type by id, or throw with the list of known ids. */
+export function getInstance(id: string): InstanceSpec {
+  const all = listInstances()
+  const hit = all.find((i) => i.id === id)
+  if (!hit) throw new UnknownEntityError('instance', id, all.map((i) => i.id))
   return hit
 }
 

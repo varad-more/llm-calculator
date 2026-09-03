@@ -142,6 +142,20 @@ Two pages, both driven by the same pure functions as the CLI:
   figure on the page is computed at build time by the same functions the sizer calls, so the
   documentation cannot drift from the math.
 
+**What to rent** is a tab on the sizer: the whole AWS GPU catalogue priced for *your* workload,
+from `g6.xlarge` to `p6-b200.48xlarge`. Each row is a real plan through the same allocator, so it
+carries the layout it needs, whether it fits, its TTFT, and what a million tokens costs on it —
+input and output separately, because they differ by more than an order of magnitude. Type a latency
+target and the table narrows to the machines that can hold it; type your own spot rate over the
+on-demand one and the ranking redraws. Prices are a dated snapshot, and the date is on the page.
+
+The comparison searches every tensor-parallel degree the machine can form rather than assuming one,
+which is how it disagrees with the usual advice: at fixed total concurrency, TP=8 on an 8x H100 is
+**4.3x** the throughput of eight TP=1 replicas, because a decode step streams the sharded weights
+once and serves the whole batch from that read, where replicas each re-read the entire model. The
+crossover where replicas win exists — past ~1k concurrent sequences on an 8B model — and the search
+finds it instead of encoding a rule of thumb. See [docs/MATH.md](docs/MATH.md#machine-search).
+
 Local hardware is in the same catalogue as the datacentre parts: Apple M2/M3/M4/M5 Ultra, Max and
 Pro, and GeForce RTX 3090/4090/5090, alongside H100s and MI300X. Unified memory is modelled the way Metal actually hands it out —
 a process gets `recommendedMaxWorkingSetSize`, about 75% of RAM, which is why a 128GB M4 Max shows
@@ -178,7 +192,7 @@ packages/core/     TypeScript. Zero runtime deps. All the math.
 packages/cli/      llmsize CLI.
 python/llmsize/    Python port. Same data, same fixtures.
 apps/web/          Next.js static export.
-data/              gpus.json, assumptions.json, quant-bpw.json, models/, arch-defaults.json
+data/              gpus.json, instances.json, assumptions.json, quant-bpw.json, models/, arch-defaults.json
 fixtures/golden/   Language-agnostic test vectors.
 validation/        Real engine logs, their parser, and the CI gate.
 docs/MATH.md       Every formula, derived and cited.
@@ -188,6 +202,9 @@ docs/MATH.md       Every formula, derived and cited.
 
 Inference only. Training and optimizer memory are out of scope. So are GPU marketplaces, model
 recommendations, auth and any backend service — this is a pure function with a few front ends.
+
+Cloud pricing is a snapshot, not a feed. `data/instances.json` carries the date it was read and the
+URL it came from; nothing phones home, and the UI takes your own rate over ours.
 
 ## Contributing
 

@@ -2,7 +2,7 @@ import { test } from 'node:test'
 import assert from 'node:assert/strict'
 import { execFileSync } from 'node:child_process'
 import { readFileSync } from 'node:fs'
-import { listGpus, getGpu, defaultAssumptions, resolveAssumptions, listModels } from '../src/data.ts'
+import { listGpus, getGpu, listInstances, getInstance, defaultAssumptions, resolveAssumptions, listModels } from '../src/data.ts'
 import { UnknownEntityError } from '../src/errors.ts'
 
 // Vendor datasheets headline the 2:1 structured-sparsity number. Anyone who pastes it in
@@ -103,4 +103,39 @@ test('generated.ts is in sync with data/ (run `pnpm gen`)', () => {
 test('model snapshots are present', () => {
   assert.ok(listModels().length >= 20)
   assert.ok(listModels().includes('meta-llama/Llama-3.1-8B-Instruct'))
+})
+
+test('every rentable instance resolves to a real GPU and a dated price', () => {
+  const ids = new Set(listGpus().map((g) => g.id))
+  const seen = new Set<string>()
+  for (const i of listInstances()) {
+    assert.ok(!seen.has(i.id), `${i.id}: duplicate`)
+    seen.add(i.id)
+    assert.ok(ids.has(i.gpu), `${i.id}: gpu "${i.gpu}" is not in data/gpus.json`)
+    assert.ok(i.gpuCount >= 1, `${i.id}: gpuCount`)
+    assert.ok(i.vcpus > 0 && i.hostRamBytes > 0, `${i.id}: host figures`)
+    assert.ok(i.networkGbps > 0, `${i.id}: networkGbps`)
+    // A price with no date is a price that will quietly rot.
+    assert.ok(i.usdPerHour > 0, `${i.id}: usdPerHour`)
+    assert.match(i.priceRetrieved, /^\d{4}-\d{2}-\d{2}$/, `${i.id}: priceRetrieved must be an ISO date`)
+    assert.ok(i.region && i.priceBasis, `${i.id}: price needs a region and a basis`)
+    assert.match(i.source_url, /^https:\/\//, `${i.id}: source_url`)
+    assert.match(i.price_source_url, /^https:\/\//, `${i.id}: price_source_url`)
+  }
+  assert.throws(() => getInstance('p9.enormous'), UnknownEntityError)
+})
+
+test('no instance is strictly dominated by another with the same GPU', () => {
+  // The catalogue lists one size per (family, GPU count) on purpose: a bigger size with the
+  // same accelerators costs more and can never win on price per token. If a dominated row
+  // creeps in, the comparison table grows a permanently-losing entry.
+  for (const a of listInstances()) {
+    for (const b of listInstances()) {
+      if (a.id === b.id || a.gpu !== b.gpu || a.gpuCount !== b.gpuCount) continue
+      assert.notEqual(
+        a.usdPerHour > b.usdPerHour, true,
+        `${a.id} has the same ${a.gpuCount}x ${a.gpu} as ${b.id} but costs more; drop it`,
+      )
+    }
+  }
 })

@@ -12,6 +12,20 @@ const bundle = {
   assumptions: read('data/assumptions.json').assumptions,
   quant: read('data/quant-bpw.json'),
   quality: read('data/quality.json').measurements,
+  // Price lives in one dated block in the source file rather than on 15 rows; flatten it here
+  // so the runtime type is a plain list and every row carries its own provenance.
+  instances: (() => {
+    const f = read('data/instances.json')
+    return f.instances.map((i) => ({
+      ...i,
+      usdPerHour: f.pricing.usdPerHour[i.id],
+      region: f.pricing.region,
+      priceRetrieved: f.pricing.retrieved,
+      priceBasis: f.pricing.basis,
+      source_url: f._spec_source,
+      price_source_url: f._price_source,
+    }))
+  })(),
   archDefaults: read('data/arch-defaults.json').byModelType,
   // Written by `pnpm validate`; absent until a real engine log has been diffed.
   validation: (() => { try { return read('data/validation-index.json') } catch { return [] } })(),
@@ -32,6 +46,7 @@ writeFileSync(
   header +
     'export interface DataBundle {\n' +
     '  gpus: any[]\n  assumptions: Record<string, any>\n  quant: any\n  quality: any[]\n' +
+    '  instances: any[]\n' +
     '  archDefaults: Record<string, any>\n  models: Record<string, any>\n  validation: any[]\n}\n\n' +
     'export const DATA: DataBundle = ' + json + '\n',
 )

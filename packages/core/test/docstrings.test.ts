@@ -9,6 +9,7 @@ const SRC = new URL('../src/', import.meta.url).pathname
 const MATH_MODULES = [
   'model.ts', 'weights.ts', 'kv.ts', 'overhead.ts', 'throughput.ts', 'plan.ts',
   'validation.ts', 'format.ts', 'lora.ts', 'speculative.ts', 'disagg.ts', 'reverse.ts',
+  'cost.ts',
   ...readdirSync(join(SRC, 'engines')).filter((f) => f !== 'types.ts').map((f) => `engines/${f}`),
 ]
 

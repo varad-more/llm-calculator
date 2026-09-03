@@ -132,6 +132,30 @@ export type Assumptions = Record<AssumptionKey, Assumption>
 /** Numeric overrides supplied by the user (CLI --assume, UI panel). */
 export type AssumptionOverrides = Partial<Record<AssumptionKey, number>>
 
+/**
+ * One rentable machine. `gpu` is an id in data/gpus.json; the host figures are what the
+ * provider documents for the instance, not what the GPU datasheet says.
+ */
+export interface InstanceSpec {
+  id: string
+  provider: string
+  gpu: string
+  gpuCount: number
+  vcpus: number
+  hostRamBytes: number
+  /** Local NVMe on the instance. 0 when the family is EBS-only. */
+  localDiskBytes: number
+  /** Sustained network, not the burst ceiling a small instance can hold for a few minutes. */
+  networkGbps: number
+  usdPerHour: number
+  region: string
+  /** ISO date the price was read. Cloud prices move; this one is a snapshot. */
+  priceRetrieved: string
+  priceBasis: string
+  source_url: string
+  price_source_url: string
+}
+
 /** A published accuracy measurement for one quantization scheme. Reported, never predicted. */
 export interface QualityMeasurement {
   scheme: QuantScheme
