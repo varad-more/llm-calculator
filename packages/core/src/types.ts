@@ -73,6 +73,12 @@ export interface GpuSpec {
   memBandwidthBytesPerSec: number
   tflopsDense: Partial<Record<'fp32' | 'tf32' | 'fp16' | 'bf16' | 'fp8' | 'int8' | 'fp4', number>>
   interconnect: { kind: string; bidirectionalBytesPerSec: number }
+  /**
+   * Fraction of `vramBytes` the platform keeps out of reach, when the device differs from the
+   * usual driver reservation. Apple silicon caps a Metal process at ~75% of unified memory.
+   * Omitted means the global `driver_reserved_vram_fraction` assumption applies.
+   */
+  reservedVramFraction?: number
   sparsity_excluded: true
   notes?: string
   source_url: string

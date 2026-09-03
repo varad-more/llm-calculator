@@ -1,5 +1,5 @@
 import type { Warning } from '../types.ts'
-import { baseAllocation, feasible, poolTokens, solveLargestFit, usableVram } from './common.ts'
+import { gpuWarnings, baseAllocation, feasible, poolTokens, solveLargestFit, usableVram } from './common.ts'
 import type { AllocationPlan, EngineAdapter, PlanInput } from './types.ts'
 
 /**
@@ -11,7 +11,7 @@ import type { AllocationPlan, EngineAdapter, PlanInput } from './types.ts'
  */
 export function planLlamacpp(i: PlanInput): AllocationPlan {
   const { weights, perDevice, kv, overhead } = baseAllocation(i)
-  const warnings: Warning[] = [...i.model.warnings, ...weights.warnings, ...kv.warnings, ...overhead.warnings]
+  const warnings: Warning[] = [...gpuWarnings(i), ...i.model.warnings, ...weights.warnings, ...kv.warnings, ...overhead.warnings]
   if (!i.quant.startsWith('gguf:')) {
     warnings.push({ code: 'llamacpp_needs_gguf', message: `llama.cpp serves GGUF; quant "${i.quant}" is not a GGUF scheme. Use e.g. gguf:Q4_K_M.` })
   }

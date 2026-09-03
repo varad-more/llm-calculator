@@ -9,8 +9,18 @@
       "vramBytes": 85899345920,
       "memoryType": "HBM3",
       "memBandwidthBytesPerSec": 3352000000000,
-      "tflopsDense": { "fp32": 67, "tf32": 494.7, "fp16": 989.4, "bf16": 989.4, "fp8": 1978.9, "int8": 1978.9 },
-      "interconnect": { "kind": "nvlink4", "bidirectionalBytesPerSec": 900000000000 },
+      "tflopsDense": {
+        "fp32": 67,
+        "tf32": 494.7,
+        "fp16": 989.4,
+        "bf16": 989.4,
+        "fp8": 1978.9,
+        "int8": 1978.9
+      },
+      "interconnect": {
+        "kind": "nvlink4",
+        "bidirectionalBytesPerSec": 900000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://resources.nvidia.com/en-us-tensor-core/nvidia-tensor-core-gpu-datasheet"
     },
@@ -21,8 +31,18 @@
       "vramBytes": 85899345920,
       "memoryType": "HBM2e",
       "memBandwidthBytesPerSec": 2000000000000,
-      "tflopsDense": { "fp32": 51, "tf32": 378, "fp16": 756.5, "bf16": 756.5, "fp8": 1513, "int8": 1513 },
-      "interconnect": { "kind": "nvlink-bridge", "bidirectionalBytesPerSec": 600000000000 },
+      "tflopsDense": {
+        "fp32": 51,
+        "tf32": 378,
+        "fp16": 756.5,
+        "bf16": 756.5,
+        "fp8": 1513,
+        "int8": 1513
+      },
+      "interconnect": {
+        "kind": "nvlink-bridge",
+        "bidirectionalBytesPerSec": 600000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://resources.nvidia.com/en-us-tensor-core/nvidia-tensor-core-gpu-datasheet"
     },
@@ -33,8 +53,18 @@
       "vramBytes": 151397597184,
       "memoryType": "HBM3e",
       "memBandwidthBytesPerSec": 4800000000000,
-      "tflopsDense": { "fp32": 67, "tf32": 494.7, "fp16": 989.4, "bf16": 989.4, "fp8": 1978.9, "int8": 1978.9 },
-      "interconnect": { "kind": "nvlink4", "bidirectionalBytesPerSec": 900000000000 },
+      "tflopsDense": {
+        "fp32": 67,
+        "tf32": 494.7,
+        "fp16": 989.4,
+        "bf16": 989.4,
+        "fp8": 1978.9,
+        "int8": 1978.9
+      },
+      "interconnect": {
+        "kind": "nvlink4",
+        "bidirectionalBytesPerSec": 900000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://resources.nvidia.com/en-us-data-center-overview/hpc-datasheet-sc23-h200"
     },
@@ -45,8 +75,19 @@
       "vramBytes": 206158430208,
       "memoryType": "HBM3e",
       "memBandwidthBytesPerSec": 8000000000000,
-      "tflopsDense": { "fp32": 80, "tf32": 1100, "fp16": 2250, "bf16": 2250, "fp8": 4500, "int8": 4500, "fp4": 9000 },
-      "interconnect": { "kind": "nvlink5", "bidirectionalBytesPerSec": 1800000000000 },
+      "tflopsDense": {
+        "fp32": 80,
+        "tf32": 1100,
+        "fp16": 2250,
+        "bf16": 2250,
+        "fp8": 4500,
+        "int8": 4500,
+        "fp4": 9000
+      },
+      "interconnect": {
+        "kind": "nvlink5",
+        "bidirectionalBytesPerSec": 1800000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://resources.nvidia.com/en-us-blackwell-architecture/datasheet"
     },
@@ -57,8 +98,17 @@
       "vramBytes": 85899345920,
       "memoryType": "HBM2e",
       "memBandwidthBytesPerSec": 2039000000000,
-      "tflopsDense": { "fp32": 19.5, "tf32": 156, "fp16": 312, "bf16": 312, "int8": 624 },
-      "interconnect": { "kind": "nvlink3", "bidirectionalBytesPerSec": 600000000000 },
+      "tflopsDense": {
+        "fp32": 19.5,
+        "tf32": 156,
+        "fp16": 312,
+        "bf16": 312,
+        "int8": 624
+      },
+      "interconnect": {
+        "kind": "nvlink3",
+        "bidirectionalBytesPerSec": 600000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf"
     },
@@ -69,8 +119,17 @@
       "vramBytes": 85899345920,
       "memoryType": "HBM2e",
       "memBandwidthBytesPerSec": 1935000000000,
-      "tflopsDense": { "fp32": 19.5, "tf32": 156, "fp16": 312, "bf16": 312, "int8": 624 },
-      "interconnect": { "kind": "nvlink-bridge", "bidirectionalBytesPerSec": 600000000000 },
+      "tflopsDense": {
+        "fp32": 19.5,
+        "tf32": 156,
+        "fp16": 312,
+        "bf16": 312,
+        "int8": 624
+      },
+      "interconnect": {
+        "kind": "nvlink-bridge",
+        "bidirectionalBytesPerSec": 600000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf"
     },
@@ -81,8 +140,17 @@
       "vramBytes": 42949672960,
       "memoryType": "HBM2",
       "memBandwidthBytesPerSec": 1555000000000,
-      "tflopsDense": { "fp32": 19.5, "tf32": 156, "fp16": 312, "bf16": 312, "int8": 624 },
-      "interconnect": { "kind": "nvlink3", "bidirectionalBytesPerSec": 600000000000 },
+      "tflopsDense": {
+        "fp32": 19.5,
+        "tf32": 156,
+        "fp16": 312,
+        "bf16": 312,
+        "int8": 624
+      },
+      "interconnect": {
+        "kind": "nvlink3",
+        "bidirectionalBytesPerSec": 600000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://www.nvidia.com/content/dam/en-zz/Solutions/Data-Center/a100/pdf/nvidia-a100-datasheet-us-nvidia-1758950-r4-web.pdf"
     },
@@ -93,8 +161,18 @@
       "vramBytes": 51539607552,
       "memoryType": "GDDR6",
       "memBandwidthBytesPerSec": 864000000000,
-      "tflopsDense": { "fp32": 91.6, "tf32": 183, "fp16": 362.05, "bf16": 362.05, "fp8": 733, "int8": 733 },
-      "interconnect": { "kind": "pcie5", "bidirectionalBytesPerSec": 64000000000 },
+      "tflopsDense": {
+        "fp32": 91.6,
+        "tf32": 183,
+        "fp16": 362.05,
+        "bf16": 362.05,
+        "fp8": 733,
+        "int8": 733
+      },
+      "interconnect": {
+        "kind": "pcie5",
+        "bidirectionalBytesPerSec": 64000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://resources.nvidia.com/en-us-l40s/l40s-datasheet-28413"
     },
@@ -105,8 +183,18 @@
       "vramBytes": 25769803776,
       "memoryType": "GDDR6",
       "memBandwidthBytesPerSec": 300000000000,
-      "tflopsDense": { "fp32": 30.3, "tf32": 60, "fp16": 121, "bf16": 121, "fp8": 242, "int8": 242 },
-      "interconnect": { "kind": "pcie4", "bidirectionalBytesPerSec": 32000000000 },
+      "tflopsDense": {
+        "fp32": 30.3,
+        "tf32": 60,
+        "fp16": 121,
+        "bf16": 121,
+        "fp8": 242,
+        "int8": 242
+      },
+      "interconnect": {
+        "kind": "pcie4",
+        "bidirectionalBytesPerSec": 32000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://resources.nvidia.com/en-us-l4/l4-datasheet"
     },
@@ -117,8 +205,17 @@
       "vramBytes": 25769803776,
       "memoryType": "GDDR6",
       "memBandwidthBytesPerSec": 600000000000,
-      "tflopsDense": { "fp32": 31.5, "tf32": 62.5, "fp16": 125, "bf16": 125, "int8": 250 },
-      "interconnect": { "kind": "pcie4", "bidirectionalBytesPerSec": 32000000000 },
+      "tflopsDense": {
+        "fp32": 31.5,
+        "tf32": 62.5,
+        "fp16": 125,
+        "bf16": 125,
+        "int8": 250
+      },
+      "interconnect": {
+        "kind": "pcie4",
+        "bidirectionalBytesPerSec": 32000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://d1.awsstatic.com/product-marketing/ec2/NVIDIA_AWS_A10G_DataSheet_FINAL_02_17_2022.pdf"
     },
@@ -129,8 +226,18 @@
       "vramBytes": 25769803776,
       "memoryType": "GDDR6X",
       "memBandwidthBytesPerSec": 1008000000000,
-      "tflopsDense": { "fp32": 82.6, "tf32": 82.6, "fp16": 165.2, "bf16": 165.2, "fp8": 660.6, "int8": 660.6 },
-      "interconnect": { "kind": "pcie4", "bidirectionalBytesPerSec": 32000000000 },
+      "tflopsDense": {
+        "fp32": 82.6,
+        "tf32": 82.6,
+        "fp16": 165.2,
+        "bf16": 165.2,
+        "fp8": 660.6,
+        "int8": 660.6
+      },
+      "interconnect": {
+        "kind": "pcie4",
+        "bidirectionalBytesPerSec": 32000000000
+      },
       "sparsity_excluded": true,
       "notes": "fp16/bf16 figure is with FP32 accumulate, which is what inference kernels use. FP16-accumulate peaks at 330.3 dense but is not the serving path.",
       "source_url": "https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf"
@@ -142,10 +249,146 @@
       "vramBytes": 206158430208,
       "memoryType": "HBM3",
       "memBandwidthBytesPerSec": 5300000000000,
-      "tflopsDense": { "fp32": 163.4, "tf32": 653.7, "fp16": 1307.4, "bf16": 1307.4, "fp8": 2614.9, "int8": 2614.9 },
-      "interconnect": { "kind": "infinity-fabric", "bidirectionalBytesPerSec": 896000000000 },
+      "tflopsDense": {
+        "fp32": 163.4,
+        "tf32": 653.7,
+        "fp16": 1307.4,
+        "bf16": 1307.4,
+        "fp8": 2614.9,
+        "int8": 2614.9
+      },
+      "interconnect": {
+        "kind": "infinity-fabric",
+        "bidirectionalBytesPerSec": 896000000000
+      },
       "sparsity_excluded": true,
       "source_url": "https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/data-sheets/amd-instinct-mi300x-data-sheet.pdf"
+    },
+    {
+      "id": "m5-ultra-512",
+      "name": "Apple M5 Ultra 512GB",
+      "vendor": "apple",
+      "vramBytes": 549755813888,
+      "memoryType": "unified",
+      "memBandwidthBytesPerSec": 1200000000000,
+      "tflopsDense": {
+        "fp32": 23.2,
+        "fp16": 23.2,
+        "bf16": 23.2
+      },
+      "interconnect": {
+        "kind": "none",
+        "bidirectionalBytesPerSec": 0
+      },
+      "reservedVramFraction": 0.25,
+      "sparsity_excluded": true,
+      "notes": "80-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible. M5 is outside the paper's range, so the M4 per-core figure is used; M5 adds per-core neural accelerators, which makes this a conservative floor.",
+      "source_url": "https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/"
+    },
+    {
+      "id": "m5-max-128",
+      "name": "Apple M5 Max 128GB",
+      "vendor": "apple",
+      "vramBytes": 137438953472,
+      "memoryType": "unified",
+      "memBandwidthBytesPerSec": 614000000000,
+      "tflopsDense": {
+        "fp32": 11.6,
+        "fp16": 11.6,
+        "bf16": 11.6
+      },
+      "interconnect": {
+        "kind": "none",
+        "bidirectionalBytesPerSec": 0
+      },
+      "reservedVramFraction": 0.25,
+      "sparsity_excluded": true,
+      "notes": "40-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible. M5 is outside the paper's range, so the M4 per-core figure is used; M5 adds per-core neural accelerators, which makes this a conservative floor.",
+      "source_url": "https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/"
+    },
+    {
+      "id": "m4-max-128",
+      "name": "Apple M4 Max 128GB",
+      "vendor": "apple",
+      "vramBytes": 137438953472,
+      "memoryType": "unified",
+      "memBandwidthBytesPerSec": 546000000000,
+      "tflopsDense": {
+        "fp32": 11.6,
+        "fp16": 11.6,
+        "bf16": 11.6
+      },
+      "interconnect": {
+        "kind": "none",
+        "bidirectionalBytesPerSec": 0
+      },
+      "reservedVramFraction": 0.25,
+      "sparsity_excluded": true,
+      "notes": "40-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+      "source_url": "https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/"
+    },
+    {
+      "id": "m4-pro-64",
+      "name": "Apple M4 Pro 64GB",
+      "vendor": "apple",
+      "vramBytes": 68719476736,
+      "memoryType": "unified",
+      "memBandwidthBytesPerSec": 273000000000,
+      "tflopsDense": {
+        "fp32": 5.8,
+        "fp16": 5.8,
+        "bf16": 5.8
+      },
+      "interconnect": {
+        "kind": "none",
+        "bidirectionalBytesPerSec": 0
+      },
+      "reservedVramFraction": 0.25,
+      "sparsity_excluded": true,
+      "notes": "20-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+      "source_url": "https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/"
+    },
+    {
+      "id": "m3-ultra-512",
+      "name": "Apple M3 Ultra 512GB",
+      "vendor": "apple",
+      "vramBytes": 549755813888,
+      "memoryType": "unified",
+      "memBandwidthBytesPerSec": 819000000000,
+      "tflopsDense": {
+        "fp32": 19.76,
+        "fp16": 19.76,
+        "bf16": 19.76
+      },
+      "interconnect": {
+        "kind": "none",
+        "bidirectionalBytesPerSec": 0
+      },
+      "reservedVramFraction": 0.25,
+      "sparsity_excluded": true,
+      "notes": "80-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+      "source_url": "https://www.apple.com/newsroom/2025/03/apple-reveals-m3-ultra-taking-apple-silicon-to-a-new-extreme/"
+    },
+    {
+      "id": "m2-ultra-192",
+      "name": "Apple M2 Ultra 192GB",
+      "vendor": "apple",
+      "vramBytes": 206158430208,
+      "memoryType": "unified",
+      "memBandwidthBytesPerSec": 800000000000,
+      "tflopsDense": {
+        "fp32": 17.02,
+        "fp16": 17.02,
+        "bf16": 17.02
+      },
+      "interconnect": {
+        "kind": "none",
+        "bidirectionalBytesPerSec": 0
+      },
+      "reservedVramFraction": 0.25,
+      "sparsity_excluded": true,
+      "notes": "76-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+      "source_url": "https://www.apple.com/newsroom/2023/06/apple-introduces-m2-ultra/"
     }
   ]
 }

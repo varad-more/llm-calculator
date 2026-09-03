@@ -1,5 +1,5 @@
 import type { Warning } from '../types.ts'
-import { baseAllocation, feasible, poolTokens, solveLargestFit, usableVram } from './common.ts'
+import { gpuWarnings, baseAllocation, feasible, poolTokens, solveLargestFit, usableVram } from './common.ts'
 import type { AllocationPlan, EngineAdapter, PlanInput } from './types.ts'
 
 /**
@@ -25,7 +25,7 @@ export function planSglang(input: PlanInput): AllocationPlan {
     },
   }
   const { weights, perDevice, kv, overhead } = baseAllocation(i)
-  const warnings: Warning[] = [...i.model.warnings, ...weights.warnings, ...kv.warnings, ...overhead.warnings]
+  const warnings: Warning[] = [...gpuWarnings(i), ...i.model.warnings, ...weights.warnings, ...kv.warnings, ...overhead.warnings]
 
   const usable = usableVram(i)
   const budget = usable * i.memoryUtilization

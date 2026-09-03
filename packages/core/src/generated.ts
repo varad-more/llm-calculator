@@ -271,6 +271,132 @@ export const DATA: DataBundle = {
    },
    "sparsity_excluded": true,
    "source_url": "https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/data-sheets/amd-instinct-mi300x-data-sheet.pdf"
+  },
+  {
+   "id": "m5-ultra-512",
+   "name": "Apple M5 Ultra 512GB",
+   "vendor": "apple",
+   "vramBytes": 549755813888,
+   "memoryType": "unified",
+   "memBandwidthBytesPerSec": 1200000000000,
+   "tflopsDense": {
+    "fp32": 23.2,
+    "fp16": 23.2,
+    "bf16": 23.2
+   },
+   "interconnect": {
+    "kind": "none",
+    "bidirectionalBytesPerSec": 0
+   },
+   "reservedVramFraction": 0.25,
+   "sparsity_excluded": true,
+   "notes": "80-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible. M5 is outside the paper's range, so the M4 per-core figure is used; M5 adds per-core neural accelerators, which makes this a conservative floor.",
+   "source_url": "https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/"
+  },
+  {
+   "id": "m5-max-128",
+   "name": "Apple M5 Max 128GB",
+   "vendor": "apple",
+   "vramBytes": 137438953472,
+   "memoryType": "unified",
+   "memBandwidthBytesPerSec": 614000000000,
+   "tflopsDense": {
+    "fp32": 11.6,
+    "fp16": 11.6,
+    "bf16": 11.6
+   },
+   "interconnect": {
+    "kind": "none",
+    "bidirectionalBytesPerSec": 0
+   },
+   "reservedVramFraction": 0.25,
+   "sparsity_excluded": true,
+   "notes": "40-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible. M5 is outside the paper's range, so the M4 per-core figure is used; M5 adds per-core neural accelerators, which makes this a conservative floor.",
+   "source_url": "https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/"
+  },
+  {
+   "id": "m4-max-128",
+   "name": "Apple M4 Max 128GB",
+   "vendor": "apple",
+   "vramBytes": 137438953472,
+   "memoryType": "unified",
+   "memBandwidthBytesPerSec": 546000000000,
+   "tflopsDense": {
+    "fp32": 11.6,
+    "fp16": 11.6,
+    "bf16": 11.6
+   },
+   "interconnect": {
+    "kind": "none",
+    "bidirectionalBytesPerSec": 0
+   },
+   "reservedVramFraction": 0.25,
+   "sparsity_excluded": true,
+   "notes": "40-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+   "source_url": "https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/"
+  },
+  {
+   "id": "m4-pro-64",
+   "name": "Apple M4 Pro 64GB",
+   "vendor": "apple",
+   "vramBytes": 68719476736,
+   "memoryType": "unified",
+   "memBandwidthBytesPerSec": 273000000000,
+   "tflopsDense": {
+    "fp32": 5.8,
+    "fp16": 5.8,
+    "bf16": 5.8
+   },
+   "interconnect": {
+    "kind": "none",
+    "bidirectionalBytesPerSec": 0
+   },
+   "reservedVramFraction": 0.25,
+   "sparsity_excluded": true,
+   "notes": "20-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+   "source_url": "https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/"
+  },
+  {
+   "id": "m3-ultra-512",
+   "name": "Apple M3 Ultra 512GB",
+   "vendor": "apple",
+   "vramBytes": 549755813888,
+   "memoryType": "unified",
+   "memBandwidthBytesPerSec": 819000000000,
+   "tflopsDense": {
+    "fp32": 19.76,
+    "fp16": 19.76,
+    "bf16": 19.76
+   },
+   "interconnect": {
+    "kind": "none",
+    "bidirectionalBytesPerSec": 0
+   },
+   "reservedVramFraction": 0.25,
+   "sparsity_excluded": true,
+   "notes": "80-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+   "source_url": "https://www.apple.com/newsroom/2025/03/apple-reveals-m3-ultra-taking-apple-silicon-to-a-new-extreme/"
+  },
+  {
+   "id": "m2-ultra-192",
+   "name": "Apple M2 Ultra 192GB",
+   "vendor": "apple",
+   "vramBytes": 206158430208,
+   "memoryType": "unified",
+   "memBandwidthBytesPerSec": 800000000000,
+   "tflopsDense": {
+    "fp32": 17.02,
+    "fp16": 17.02,
+    "bf16": 17.02
+   },
+   "interconnect": {
+    "kind": "none",
+    "bidirectionalBytesPerSec": 0
+   },
+   "reservedVramFraction": 0.25,
+   "sparsity_excluded": true,
+   "notes": "76-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
+   "source_url": "https://www.apple.com/newsroom/2023/06/apple-introduces-m2-ultra/"
   }
  ],
  "assumptions": {

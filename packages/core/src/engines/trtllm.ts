@@ -1,5 +1,5 @@
 import type { Warning } from '../types.ts'
-import { baseAllocation, feasible, poolTokens, solveLargestFit, usableVram } from './common.ts'
+import { gpuWarnings, baseAllocation, feasible, poolTokens, solveLargestFit, usableVram } from './common.ts'
 import type { AllocationPlan, EngineAdapter, PlanInput } from './types.ts'
 
 /**
@@ -17,7 +17,7 @@ import type { AllocationPlan, EngineAdapter, PlanInput } from './types.ts'
  */
 export function planTrtllm(i: PlanInput): AllocationPlan {
   const { weights, perDevice, kv, overhead } = baseAllocation(i)
-  const warnings: Warning[] = [...i.model.warnings, ...weights.warnings, ...kv.warnings, ...overhead.warnings, {
+  const warnings: Warning[] = [...gpuWarnings(i), ...i.model.warnings, ...weights.warnings, ...kv.warnings, ...overhead.warnings, {
     code: 'trtllm_build_time_budget',
     message: 'TensorRT-LLM freezes activation workspace at build time; these numbers assume the engine was built with the same max_num_tokens/max_batch_size shown in the emitted flags.',
   }]

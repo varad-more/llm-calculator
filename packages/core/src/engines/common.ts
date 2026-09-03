@@ -2,6 +2,7 @@ import { assume } from '../data.ts'
 import { kvBytesForSequence, kvCacheBytes } from '../kv.ts'
 import { overheadBytes, type OverheadInput } from '../overhead.ts'
 import { weightBytes, weightBytesPerDevice } from '../weights.ts'
+import type { Warning } from '../types.ts'
 import type { PlanInput } from './types.ts'
 
 /**
@@ -12,7 +13,32 @@ import type { PlanInput } from './types.ts'
  * @see docs/MATH.md#usable-vram
  */
 export function usableVram(i: PlanInput): number {
-  return i.gpu.vramBytes * (1 - assume(i.assumptions, 'driver_reserved_vram_fraction'))
+  const reserved = i.gpu.reservedVramFraction ?? assume(i.assumptions, 'driver_reserved_vram_fraction')
+  return i.gpu.vramBytes * (1 - reserved)
+}
+
+/**
+ * Warnings that come from the hardware rather than the model. A device with no inter-GPU link
+ * (unified-memory Apple silicon) cannot be tensor-parallelised at all: the all-reduce term
+ * would divide by a zero-byte link, so say so instead of returning a non-finite time.
+ * @see docs/MATH.md#tp-communication
+ */
+export function gpuWarnings(i: PlanInput): Warning[] {
+  const devices = Math.max(1, i.parallel.tp) * Math.max(1, i.parallel.pp)
+  const w: Warning[] = []
+  if (devices > 1 && i.gpu.interconnect.bidirectionalBytesPerSec === 0) {
+    w.push({
+      code: 'no_interconnect',
+      message: `${i.gpu.name} has no inter-device link, so tp/pp above 1 is not servable. Throughput below is not meaningful.`,
+    })
+  }
+  if (i.gpu.vendor === 'apple') {
+    w.push({
+      code: 'apple_prefill_is_a_floor',
+      message: 'Apple publishes no GPU TFLOPS, so fp16 is pinned to a measured fp32 figure and prefill/TTFT here is a conservative floor. Decode uses Apple\'s own bandwidth number and tracks reality much more closely.',
+    })
+  }
+  return w
 }
 
 /** Shared weight/KV/overhead computation every engine adapter starts from. @see docs/MATH.md#allocation */

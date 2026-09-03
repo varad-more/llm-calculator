@@ -12,6 +12,12 @@ const SPARSE_BF16_TFLOPS: Record<string, number> = {
   'a100-sxm-80': 624, 'a100-pcie-80': 624, 'a100-sxm-40': 624, 'l40s-48': 733,
   'l4-24': 242, 'a10g-24': 250, 'rtx4090-24': 330.4, 'mi300x-192': 2614.9,
 }
+// Apple publishes no tensor-core sparsity figure to paste in by mistake — there is no 2:1 mode
+// and no marketed TFLOPS at all. The compute figures for these come from a measured SGEMM
+// benchmark (see each entry's `notes`), so the doubling check has nothing to check.
+const NO_VENDOR_SPARSITY = new Set([
+  'm5-ultra-512', 'm5-max-128', 'm4-max-128', 'm4-pro-64', 'm3-ultra-512', 'm2-ultra-192',
+])
 const SPARSE_FP8_TFLOPS: Record<string, number> = {
   'h100-sxm-80': 3957.8, 'h100-pcie-80': 3026, 'h200-sxm-141': 3957.8, 'b200-sxm-192': 9000,
   'l40s-48': 1466, 'l4-24': 485, 'rtx4090-24': 1321.2, 'mi300x-192': 5229.8,
@@ -24,7 +30,15 @@ test('every GPU entry is schema-complete and sourced', () => {
     assert.ok(g.memBandwidthBytesPerSec > 1e9, `${g.id}: bandwidth looks like it is not in bytes/s`)
     assert.ok(g.tflopsDense.fp16 && g.tflopsDense.bf16, `${g.id}: needs fp16 and bf16 dense TFLOPS`)
     assert.ok(g.tflopsDense.fp32, `${g.id}: needs fp32`)
-    assert.ok(g.interconnect?.bidirectionalBytesPerSec > 0, `${g.id}: interconnect`)
+    // A device that cannot be tensor-parallelised declares kind 'none' and a zero link, which
+    // is honest rather than a made-up bandwidth. Everything else must name a real one.
+    assert.ok(g.interconnect?.kind, `${g.id}: interconnect kind`)
+    assert.ok(
+      g.interconnect.kind === 'none'
+        ? g.interconnect.bidirectionalBytesPerSec === 0
+        : g.interconnect.bidirectionalBytesPerSec > 0,
+      `${g.id}: interconnect`,
+    )
     assert.match(g.source_url, /^https:\/\//, `${g.id}: source_url must be a URL`)
     assert.equal(g.sparsity_excluded, true, `${g.id}: must assert sparsity exclusion`)
   }
@@ -32,6 +46,10 @@ test('every GPU entry is schema-complete and sourced', () => {
 
 test('no GPU quotes a sparsity-inflated TFLOPS number', () => {
   for (const g of listGpus()) {
+    if (NO_VENDOR_SPARSITY.has(g.id)) {
+      assert.ok(!g.tflopsDense.fp8, `${g.id}: no vendor sparsity figure exists, so fp8 needs a source first`)
+      continue
+    }
     const sparse = SPARSE_BF16_TFLOPS[g.id]
     assert.ok(sparse !== undefined, `${g.id} has no known dense ceiling in the test table; add one`)
     assert.ok(

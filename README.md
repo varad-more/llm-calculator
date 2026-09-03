@@ -142,6 +142,12 @@ Two pages, both driven by the same pure functions as the CLI:
   figure on the page is computed at build time by the same functions the sizer calls, so the
   documentation cannot drift from the math.
 
+Local hardware is in the same catalogue as the datacentre parts: Apple M2/M3/M4/M5 Ultra, Max and
+Pro alongside H100s and MI300X. Unified memory is modelled the way Metal actually hands it out —
+a process gets `recommendedMaxWorkingSetSize`, about 75% of RAM, which is why a 128GB M4 Max shows
+96 GiB usable and a 512GB M5 Ultra cannot quite hold DeepSeek-V3 at Q4_K_M without raising
+`iogpu.wired_limit_mb`.
+
 Plus one pre-rendered static page per model (`/llama-3-1-70b-instruct-vram/`) with real numbers in
 the HTML before any JS runs.
 
