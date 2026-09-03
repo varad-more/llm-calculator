@@ -182,8 +182,10 @@ export const DATA: DataBundle = {
     "kind": "pcie5",
     "bidirectionalBytesPerSec": 64000000000
    },
+   "reservedVramFraction": 0.0625,
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-l40s/l40s-datasheet-28413"
+   "source_url": "https://resources.nvidia.com/en-us-l40s/l40s-datasheet-28413",
+   "notes": "GDDR6 datacenter cards ship with in-band ECC enabled, which stores parity in the framebuffer itself and costs 1/16 of capacity. AWS documents the result per instance: 22 GiB of 24 on the A10G (g5) and L4 (g6), 44 GiB of 48 on the L40S (g6e). The 1/16 is the mechanism and matches those figures to within AWS's whole-GiB rounding. Consumer GeForce cards have no ECC and are not reduced. Figures: https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html"
   },
   {
    "id": "l4-24",
@@ -204,8 +206,10 @@ export const DATA: DataBundle = {
     "kind": "pcie4",
     "bidirectionalBytesPerSec": 32000000000
    },
+   "reservedVramFraction": 0.0625,
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-l4/l4-datasheet"
+   "source_url": "https://resources.nvidia.com/en-us-l4/l4-datasheet",
+   "notes": "GDDR6 datacenter cards ship with in-band ECC enabled, which stores parity in the framebuffer itself and costs 1/16 of capacity. AWS documents the result per instance: 22 GiB of 24 on the A10G (g5) and L4 (g6), 44 GiB of 48 on the L40S (g6e). The 1/16 is the mechanism and matches those figures to within AWS's whole-GiB rounding. Consumer GeForce cards have no ECC and are not reduced. Figures: https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html"
   },
   {
    "id": "a10g-24",
@@ -225,8 +229,10 @@ export const DATA: DataBundle = {
     "kind": "pcie4",
     "bidirectionalBytesPerSec": 32000000000
    },
+   "reservedVramFraction": 0.0625,
    "sparsity_excluded": true,
-   "source_url": "https://d1.awsstatic.com/product-marketing/ec2/NVIDIA_AWS_A10G_DataSheet_FINAL_02_17_2022.pdf"
+   "source_url": "https://d1.awsstatic.com/product-marketing/ec2/NVIDIA_AWS_A10G_DataSheet_FINAL_02_17_2022.pdf",
+   "notes": "GDDR6 datacenter cards ship with in-band ECC enabled, which stores parity in the framebuffer itself and costs 1/16 of capacity. AWS documents the result per instance: 22 GiB of 24 on the A10G (g5) and L4 (g6), 44 GiB of 48 on the L40S (g6e). The 1/16 is the mechanism and matches those figures to within AWS's whole-GiB rounding. Consumer GeForce cards have no ECC and are not reduced. Figures: https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html"
   },
   {
    "id": "rtx4090-24",

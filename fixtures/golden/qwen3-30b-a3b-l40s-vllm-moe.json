@@ -17,17 +17,22 @@
     "kvBytesPerDevice": 12884901888,
     "activationBytes": 335544320,
     "overheadTotalBytes": 1822321295.3600001,
-    "usableVramBytes": 51333449121.792,
-    "availableKvBytes": 13223144066.2528,
-    "numBlocks": 8407,
-    "maxTokens": 134512,
-    "fits": true,
-    "autofix": null,
-    "warningCodes": [],
+    "usableVramBytes": 48318382080,
+    "availableKvBytes": 10509583728.64,
+    "numBlocks": 6681,
+    "maxTokens": 106896,
+    "fits": false,
+    "autofix": {
+      "maxModelLen": 40960,
+      "maxNumSeqs": 13
+    },
+    "warningCodes": [
+      "infeasible"
+    ],
     "flags": [
       "--tensor-parallel-size 1",
-      "--max-model-len 8192",
-      "--max-num-seqs 16",
+      "--max-model-len 40960",
+      "--max-num-seqs 13",
       "--gpu-memory-utilization 0.90",
       "--max-num-batched-tokens 8192",
       "--quantization fp8",

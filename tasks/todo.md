@@ -49,3 +49,25 @@ than sharing one. 20 real HF model snapshots, 12 sourced GPUs, every empirical c
 - The web UI was verified by build and typecheck only — the browser extension was not
   connected, so there was no visual pass.
 - Throughput is a roofline. It is labelled `roofline` and `predicted` everywhere it appears.
+
+---
+
+## Machine selection on AWS (#4 compare, #2 SLO -> machine, #1 cost)
+
+One sweep serves all three: #2 is the sweep filtered by an SLO, #1 is a column of it.
+
+- [ ] `data/instances.json` — AWS GPU instance catalogue. Price from the AWS pricing feed
+      (`b0.p.awsstatic.com/pricing/2.0/...`), GPU count / host RAM / NVMe / network from the
+      AWS accelerated-computing docs table. Every row carries `source_url` and `priceRetrieved`.
+- [ ] Fix first: GDDR6 datacenter cards (A10G, L4, L40S) ship with in-band ECC on, which eats
+      1/16 of the framebuffer. AWS documents 22 GiB of 24 and 44 GiB of 48. Without this the
+      tool says "fits" on a g6e.xlarge when it does not. Regenerate goldens.
+- [ ] `packages/core/src/cost.ts` — `costPerMillionTokens`, `compareMachines`. Replicas, not
+      just TP: if the model fits on one GPU you run 8 replicas on a p5.48xlarge, you do not run
+      TP=8. Aggregate throughput scales with replicas, latency does not.
+- [ ] `data.ts` — `listInstances` / `getInstance`.
+- [ ] docs/MATH.md `## Cost per token`, `## Machine search`; `cost.ts` into MATH_MODULES.
+- [ ] `data.test.ts` — every instance resolves its GPU, has a price, a source and a date.
+- [ ] Web: a "Machines" tab in the sizer. Columns: fits, layout, tok/s, TTFT, $/1M in, $/1M out.
+      SLO inputs (max TTFT, min tok/s per user) filter it. Hourly rate editable per row.
+- [ ] `gen-docs.mjs` -> docs/INSTANCES.md.

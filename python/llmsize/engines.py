@@ -15,7 +15,10 @@ from .memory import (
 
 def usable_vram(gpu, a) -> float:
     """See docs/MATH.md#usable-vram."""
-    return gpu["vramBytes"] * (1 - assume(a, "driver_reserved_vram_fraction"))
+    reserved = gpu.get("reservedVramFraction")
+    if reserved is None:
+        reserved = assume(a, "driver_reserved_vram_fraction")
+    return gpu["vramBytes"] * (1 - reserved)
 
 
 def _base_allocation(i, all_positions=False):
