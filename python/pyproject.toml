@@ -17,7 +17,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://varad-more.github.io/llm-calculator/"
+Homepage = "https://varadmore.me/llm-calculator/"
 Repository = "https://github.com/varad-more/llm-calculator"
 
 [tool.setuptools]

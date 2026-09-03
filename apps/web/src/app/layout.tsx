@@ -10,7 +10,7 @@ const description =
   'llama.cpp, then generate the exact serving flags.'
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://varad-more.github.io/llm-calculator/'),
+  metadataBase: new URL('https://varadmore.me/llm-calculator/'),
   title: {
     default: 'llmsize — LLM inference sizing and serving-config generator',
     template: '%s — llmsize',
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
               <div>
                 <p className="text-sm font-semibold tracking-tight">llmsize</p>
                 <p className="mt-2 max-w-md text-xs leading-relaxed text-muted-foreground">
-                  Inference sizing and serving-config generation for LLMs. Engine-accurate memory
+                  Inference sizing and serving-config generation for LLMs. Engine-aware memory
                   allocation, roofline throughput, and the exact flags to run it — computed by pure
                   functions with zero runtime dependencies, in your browser.
                 </p>

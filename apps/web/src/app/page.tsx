@@ -6,7 +6,7 @@ import { allValidations } from '@llmsize/core'
 export const metadata = {
   title: { absolute: 'llmsize — LLM inference sizing and serving-config generator' },
   description:
-    'Predict engine-accurate memory allocation and throughput for vLLM, SGLang, TensorRT-LLM and llama.cpp, then emit the exact flags to run it.',
+    'Predict engine-aware memory allocation and throughput for vLLM, SGLang, TensorRT-LLM and llama.cpp, then emit the exact flags to run it.',
   alternates: { canonical: '/' },
 }
 

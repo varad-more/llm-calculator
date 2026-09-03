@@ -4,7 +4,7 @@ Inference sizing and serving-config generation for LLMs. Give it a model, a GPU 
 it tells you what the serving engine will allocate, whether it fits, roughly how fast it goes —
 and prints the exact flags to run it.
 
-**[Open the calculator](https://varad-more.github.io/llm-calculator/)**
+**[Open the calculator](https://varadmore.me/llm-calculator/)**
 
 ```bash
 llmsize plan --model meta-llama/Llama-3.1-70B-Instruct --gpu h100-sxm-80 --tp 4 \

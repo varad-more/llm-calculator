@@ -4,7 +4,7 @@
   "description": "CLI for engine-aware LLM inference sizing and runnable serving configurations.",
   "type": "module",
   "license": "Apache-2.0",
-  "homepage": "https://varad-more.github.io/llm-calculator/",
+  "homepage": "https://varadmore.me/llm-calculator/",
   "repository": {
     "type": "git",
     "url": "https://github.com/varad-more/llm-calculator.git",
