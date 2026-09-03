@@ -5,6 +5,7 @@ export const metadata = {
   description:
     'Given the GPUs you have, enumerate every model, quantization and context length that actually ' +
     'fits — sized through the same engine allocator, with the serving command for each.',
+  alternates: { canonical: '/fits/' },
 }
 
 export default function FitsPage() {

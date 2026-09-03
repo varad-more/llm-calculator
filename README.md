@@ -4,6 +4,8 @@ Inference sizing and serving-config generation for LLMs. Give it a model, a GPU 
 it tells you what the serving engine will allocate, whether it fits, roughly how fast it goes —
 and prints the exact flags to run it.
 
+**[Open the calculator](https://varad-more.github.io/llm-calculator/)**
+
 ```bash
 llmsize plan --model meta-llama/Llama-3.1-70B-Instruct --gpu h100-sxm-80 --tp 4 \
              --engine vllm --context 32768 --concurrency 64 --kv-dtype fp8
@@ -102,6 +104,7 @@ node packages/cli/bin/llmsize.mjs plan --model Qwen/Qwen3-30B-A3B --gpu l40s-48 
 Python, importable next to vLLM:
 
 ```python
+# python3 -m pip install ./python
 from llmsize import size
 r = size({"model": "meta-llama/Llama-3.1-70B-Instruct", "gpu": "h100-sxm-80",
           "engine": "vllm", "tp": 4, "context": 32768, "concurrency": 64})
@@ -125,7 +128,9 @@ pnpm dev       # http://localhost:3000
 pnpm preview   # static export, served on :8080 — no server, no backend
 ```
 
-Two pages, both driven by the same pure functions as the CLI:
+Pushes to `main` run the full test suite and publish the static export to GitHub Pages.
+
+Three entry points, all driven by the same pure functions as the CLI:
 
 - **Size a config** — pick a model, GPU, engine and workload and watch the per-GPU allocation
   redraw. Tabs on the result surface the four serving features: the runnable command, the memory

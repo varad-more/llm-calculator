@@ -91,6 +91,8 @@ test('user overrides replace the value and record what they replaced', () => {
   assert.equal(a.mbu_decode.value, 0.9)
   assert.match(a.mbu_decode.rationale, /user override \(was 0\.65/)
   assert.equal(a.mfu_prefill.value, defaultAssumptions().mfu_prefill.value)
+  assert.throws(() => resolveAssumptions({ mbu_decode: 0 }), RangeError)
+  assert.throws(() => resolveAssumptions({ quant_group_size: 1.5 }), RangeError)
 })
 
 test('generated.ts is in sync with data/ (run `pnpm gen`)', () => {

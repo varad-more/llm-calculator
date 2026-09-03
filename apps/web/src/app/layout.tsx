@@ -5,15 +5,33 @@ import './globals.css'
 
 const geistSans = Geist({ variable: '--font-geist-sans', subsets: ['latin'] })
 const geistMono = Geist_Mono({ variable: '--font-geist-mono', subsets: ['latin'] })
+const description =
+  'Predict engine-aware GPU memory and throughput for vLLM, SGLang, TensorRT-LLM and ' +
+  'llama.cpp, then generate the exact serving flags.'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://varad-more.github.io/llm-calculator/'),
   title: {
     default: 'llmsize — LLM inference sizing and serving-config generator',
     template: '%s — llmsize',
   },
-  description:
-    'Predict engine-accurate memory allocation and throughput for vLLM, SGLang, TensorRT-LLM and ' +
-    'llama.cpp, then emit the exact flags to run it.',
+  description,
+  applicationName: 'llmsize',
+  keywords: ['LLM inference', 'GPU memory', 'VRAM calculator', 'vLLM', 'SGLang', 'TensorRT-LLM', 'llama.cpp'],
+  authors: [{ name: 'Varad More', url: 'https://github.com/varad-more' }],
+  creator: 'Varad More',
+  openGraph: {
+    type: 'website',
+    siteName: 'llmsize',
+    title: 'llmsize — LLM inference sizing and serving-config generator',
+    description,
+  },
+  twitter: {
+    card: 'summary',
+    title: 'llmsize — LLM inference sizing and serving-config generator',
+    description,
+  },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
@@ -24,9 +42,9 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
     >
       <body className="flex min-h-full flex-col">
         <header className="sticky top-0 z-30 border-b bg-background/85 backdrop-blur">
-          <div className="mx-auto flex max-w-7xl items-center gap-6 px-4 py-3 md:px-8">
+          <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3 md:flex-nowrap md:gap-6 md:px-8">
             <Link href="/" className="text-sm font-semibold tracking-tight">llmsize</Link>
-            <nav className="flex items-center gap-4 text-xs text-muted-foreground">
+            <nav className="order-last flex w-full items-center gap-4 overflow-x-auto text-xs text-muted-foreground md:order-none md:w-auto">
               <Link href="/" className="hover:text-foreground">Size a config</Link>
               <Link href="/fits/" className="hover:text-foreground">What fits my GPU</Link>
               <Link href="/explained/" className="hover:text-foreground">How it works</Link>

@@ -1,7 +1,11 @@
 {
   "name": "@llmsize/web",
   "version": "0.1.0",
+  "description": "Static web calculator for LLM inference memory, throughput, and serving configuration.",
   "private": true,
+  "license": "Apache-2.0",
+  "homepage": "https://varad-more.github.io/llm-calculator/",
+  "keywords": ["llm", "inference", "gpu", "vram", "calculator"],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

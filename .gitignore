@@ -1,8 +1,12 @@
 node_modules/
 dist/
+build/
+*.egg-info/
 .next/
 out/
 __pycache__/
 *.pyc
 .DS_Store
 .venv/
+.env*
+!.env.example

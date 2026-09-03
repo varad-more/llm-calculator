@@ -1,7 +1,16 @@
 {
   "name": "@llmsize/core",
   "version": "0.1.0",
+  "description": "Pure TypeScript sizing engine for LLM inference memory, throughput, and serving configuration.",
   "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://varad-more.github.io/llm-calculator/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/varad-more/llm-calculator.git",
+    "directory": "packages/core"
+  },
+  "keywords": ["llm", "inference", "gpu", "vram", "vllm", "sglang"],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -9,12 +18,16 @@
     }
   },
   "files": [
-    "src"
+    "dist"
   ],
   "dependencies": {},
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "prepack": "pnpm build"
+  },
+  "engines": {
+    "node": ">=22.6"
   }
 }

@@ -4,9 +4,10 @@ import { allSlugs, modelForSlug } from '@/lib/models'
 import { allValidations } from '@llmsize/core'
 
 export const metadata = {
-  title: 'llmsize — LLM inference sizing and serving-config generator',
+  title: { absolute: 'llmsize — LLM inference sizing and serving-config generator' },
   description:
     'Predict engine-accurate memory allocation and throughput for vLLM, SGLang, TensorRT-LLM and llama.cpp, then emit the exact flags to run it.',
+  alternates: { canonical: '/' },
 }
 
 export default function Home() {

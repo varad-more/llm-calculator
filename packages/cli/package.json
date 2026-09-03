@@ -1,8 +1,18 @@
 {
   "name": "@llmsize/cli",
   "version": "0.1.0",
+  "description": "CLI for engine-aware LLM inference sizing and runnable serving configurations.",
   "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://varad-more.github.io/llm-calculator/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/varad-more/llm-calculator.git",
+    "directory": "packages/cli"
+  },
+  "keywords": ["llm", "inference", "gpu", "vram", "cli", "vllm"],
   "bin": { "llmsize": "./bin/llmsize.mjs" },
   "dependencies": { "@llmsize/core": "workspace:*" },
-  "files": ["bin", "src"]
+  "files": ["bin", "src"],
+  "engines": { "node": ">=22.6" }
 }

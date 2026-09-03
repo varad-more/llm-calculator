@@ -68,6 +68,7 @@ export function resolveModel(model: string | Record<string, any>): ModelSpec {
  * @see docs/MATH.md#allocation
  */
 export function size(req: SizingRequest): SizingResult {
+  validateRequest(req)
   const engine = ENGINES[req.engine]
   if (!engine) throw new UnknownEntityError('engine', req.engine, Object.keys(ENGINES))
 
@@ -111,5 +112,47 @@ export function size(req: SizingRequest): SizingResult {
     command: [SERVE[req.engine](input.modelRef!), ...flags].join(' \\\n  '),
     validation,
     label: validation ? 'validated' : 'predicted',
+  }
+}
+
+function validateRequest(req: SizingRequest): void {
+  if ((typeof req.model === 'string' && !req.model.trim()) ||
+      (typeof req.model !== 'string' &&
+       (!req.model || typeof req.model !== 'object' || Array.isArray(req.model)))) {
+    throw new TypeError('model must be a snapshot id or config object')
+  }
+  if (typeof req.gpu !== 'string' || !req.gpu.trim()) throw new TypeError('gpu must be a non-empty id')
+
+  const positiveIntegers = {
+    context: req.context,
+    concurrency: req.concurrency,
+    avgSeqLen: req.avgSeqLen ?? req.context,
+    chunkTokens: req.chunkTokens ?? 8192,
+    blockSize: req.blockSize ?? 16,
+    tp: req.tp ?? 1,
+    pp: req.pp ?? 1,
+  }
+  for (const [name, value] of Object.entries(positiveIntegers)) {
+    if (!Number.isSafeInteger(value) || value < 1) {
+      throw new RangeError(`${name} must be a positive integer; got ${value}`)
+    }
+  }
+  if (positiveIntegers.avgSeqLen > req.context) {
+    throw new RangeError(`avgSeqLen must not exceed context; got ${positiveIntegers.avgSeqLen} > ${req.context}`)
+  }
+
+  const utilization = req.memoryUtilization ?? 0.9
+  if (!Number.isFinite(utilization) || utilization <= 0 || utilization > 1) {
+    throw new RangeError(`memoryUtilization must be greater than 0 and at most 1; got ${utilization}`)
+  }
+
+  if (req.prefixCache) {
+    const { hitRate, sharedPrefixTokens } = req.prefixCache
+    if (!Number.isFinite(hitRate) || hitRate < 0 || hitRate > 1) {
+      throw new RangeError(`prefixCache.hitRate must be between 0 and 1; got ${hitRate}`)
+    }
+    if (!Number.isSafeInteger(sharedPrefixTokens) || sharedPrefixTokens < 0 || sharedPrefixTokens > req.context) {
+      throw new RangeError(`prefixCache.sharedPrefixTokens must be an integer between 0 and context; got ${sharedPrefixTokens}`)
+    }
   }
 }

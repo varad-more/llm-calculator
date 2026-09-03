@@ -71,17 +71,18 @@ export interface DisaggPlan {
  */
 export function planDisaggregated(req: DisaggRequest): DisaggPlan {
   const shared = { ...req } as any
+  const context = Math.max(req.context, req.promptTokens + req.outputTokens)
   delete shared.prefill; delete shared.decode; delete shared.prefillConcurrency
   delete shared.decodeConcurrency; delete shared.promptTokens; delete shared.outputTokens
   delete shared.transferBytesPerSec
 
   const prefill = size({
     ...shared, gpu: req.prefill.gpu ?? req.gpu, tp: req.prefill.tp, pp: req.prefill.pp ?? 1,
-    context: req.context, concurrency: req.prefillConcurrency, avgSeqLen: req.promptTokens,
+    context, concurrency: req.prefillConcurrency, avgSeqLen: req.promptTokens,
   })
   const decode = size({
     ...shared, gpu: req.decode.gpu ?? req.gpu, tp: req.decode.tp, pp: req.decode.pp ?? 1,
-    context: req.context, concurrency: req.decodeConcurrency,
+    context, concurrency: req.decodeConcurrency,
     avgSeqLen: req.promptTokens + req.outputTokens,
   })
 

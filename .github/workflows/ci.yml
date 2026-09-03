@@ -6,12 +6,14 @@ on:
 
 jobs:
   test:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
         with: { version: 10 }
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with: { node-version: '22.18', cache: pnpm }
       - uses: actions/setup-python@v5
         with: { python-version: '3.11' }
@@ -23,7 +25,9 @@ jobs:
       - run: git diff --exit-code -- packages/core/src/generated.ts python/llmsize/_generated.py docs/ASSUMPTIONS.md docs/HARDWARE.md
 
       - run: pnpm typecheck
-      - run: node --experimental-strip-types --test packages/core/test/*.test.ts validation/*.test.ts
+      - run: pnpm lint
+      - run: pnpm -F @llmsize/core build
+      - run: node --experimental-strip-types --test packages/*/test/*.test.ts validation/*.test.ts
       - run: python3 python/tests/test_golden.py
 
       # Golden fixtures are the TS<->Python contract; regenerating must be a no-op.
@@ -34,3 +38,21 @@ jobs:
       - run: pnpm validate -- --check
 
       - run: pnpm build
+      - if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v4
+        with: { path: apps/web/out }
+
+  deploy:
+    if: github.event_name == 'push'
+    needs: test
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

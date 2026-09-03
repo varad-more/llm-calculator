@@ -1,7 +1,21 @@
 {
   "name": "llmsize-monorepo",
+  "description": "Engine-aware GPU memory, throughput, and serving-config calculator for LLM inference.",
   "private": true,
   "type": "module",
+  "license": "Apache-2.0",
+  "homepage": "https://varad-more.github.io/llm-calculator/",
+  "repository": "github:varad-more/llm-calculator",
+  "keywords": [
+    "llm",
+    "inference",
+    "gpu",
+    "vram",
+    "vllm",
+    "sglang",
+    "tensorrt-llm",
+    "llama.cpp"
+  ],
   "packageManager": "pnpm@10.28.2",
   "engines": {
     "node": ">=22.6"
@@ -9,8 +23,9 @@
   "scripts": {
     "gen": "node scripts/gen-data.mjs && node scripts/gen-docs.mjs",
     "fetch-models": "node scripts/fetch-models.mjs",
-    "test": "pnpm gen && node --experimental-strip-types --test packages/core/test/*.test.ts validation/*.test.ts && pnpm test:py",
+    "test": "pnpm gen && pnpm -F @llmsize/core build && node --experimental-strip-types --test packages/*/test/*.test.ts validation/*.test.ts && pnpm test:py",
     "test:py": "python3 python/tests/test_golden.py",
+    "lint": "pnpm -F @llmsize/web lint",
     "validate": "node --experimental-strip-types scripts/validate.mjs",
     "goldens": "node --experimental-strip-types scripts/gen-goldens.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",

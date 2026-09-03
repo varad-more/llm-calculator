@@ -130,7 +130,9 @@ function Row({ r, open, onToggle, rate, onRate }: {
         </td>
         <td className="py-1.5 pr-3 text-right font-mono text-xs">
           <input
+            aria-label={`Hourly rate for ${r.instance.id}`}
             className={`w-20 rounded border bg-transparent px-1 text-right ${rate !== undefined ? 'border-foreground/40' : 'border-transparent hover:border-border'}`}
+            inputMode="decimal"
             value={rate ?? r.instance.usdPerHour}
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => {

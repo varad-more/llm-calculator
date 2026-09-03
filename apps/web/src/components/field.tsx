@@ -9,13 +9,13 @@ export function Field({ label, hint, children, className }: {
   className?: string
 }) {
   return (
-    <div className={`space-y-1.5 ${className ?? ''}`}>
-      <Label className="text-xs">
+    <Label className={`block space-y-1.5 text-xs ${className ?? ''}`}>
+      <span className="flex items-center gap-1">
         {label}
         {hint ? <span className="ml-1 font-normal text-muted-foreground">{hint}</span> : null}
-      </Label>
+      </span>
       {children}
-    </div>
+    </Label>
   )
 }
 

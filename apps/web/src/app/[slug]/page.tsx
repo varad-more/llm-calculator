@@ -17,10 +17,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const spec = specFor(id)
   const h100 = size({ model: id, gpu: 'h100-sxm-80', engine: 'vllm', context: 8192, concurrency: 1 })
   return {
-    title: `${id} VRAM requirements and vLLM config — llmsize`,
+    title: `${id} VRAM requirements and vLLM config`,
     description:
       `${id} needs ${gib(h100.plan.weights.totalBytes)} for weights at bf16 (${count(spec.numLayers)} layers, ` +
       `${describe(spec)}). Size it for any GPU, quantization and context, and get the vLLM flags.`,
+    alternates: { canonical: `/${slug}/` },
   }
 }
 

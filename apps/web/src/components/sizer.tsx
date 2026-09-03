@@ -106,19 +106,20 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
         <CardContent className="space-y-3">
           <Select value={models.includes(cfg.model) ? cfg.model : ''}
                   onValueChange={(v) => { setSource(null); set('model', v) }}>
-            <SelectTrigger className="w-full"><SelectValue placeholder={cfg.model} /></SelectTrigger>
+            <SelectTrigger aria-label="Model" className="w-full"><SelectValue placeholder={cfg.model} /></SelectTrigger>
             <SelectContent>{models.map((m) => <SelectItem key={m} value={m}>{m}</SelectItem>)}</SelectContent>
           </Select>
           <details className="text-xs">
             <summary className="cursor-pointer text-muted-foreground">any other Hugging Face model</summary>
             <div className="mt-2 space-y-2">
-              <Input placeholder="org/model-name" value={customId} onChange={(e) => setCustomId(e.target.value)} />
-              <Input placeholder="hf_… read token (only for gated repos)" value={token}
+              <Input aria-label="Hugging Face model id" placeholder="org/model-name" value={customId} onChange={(e) => setCustomId(e.target.value)} />
+              <Input aria-label="Hugging Face access token" placeholder="hf_… read token (only for gated repos)" value={token}
                      onChange={(e) => setToken(e.target.value)} type="password" />
               <Button size="sm" onClick={loadCustom} disabled={busy || !customId.trim()}>
                 {busy ? 'fetching…' : 'fetch config.json'}
               </Button>
               <textarea
+                aria-label="Hugging Face config JSON"
                 className="h-24 w-full rounded-md border bg-transparent p-2 font-mono text-[11px]"
                 placeholder="…or paste a raw config.json here"
                 value={pasted} onChange={(e) => setPasted(e.target.value)}
@@ -147,7 +148,7 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
             </Select>
           </Field>
           <Field label="Utilization" hint={cfg.util.toFixed(2)}>
-            <Slider min={0.5} max={0.99} step={0.01} value={[cfg.util]} onValueChange={([v]) => set('util', v!)} />
+            <Slider aria-label="Utilization" min={0.5} max={0.99} step={0.01} value={[cfg.util]} onValueChange={([v]) => set('util', v!)} />
           </Field>
           <Field label="Tensor parallel">
             <Input type="number" min={1} max={64} value={cfg.tp} onChange={(e) => set('tp', Math.max(1, Number(e.target.value) || 1))} />
@@ -185,12 +186,12 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
           </Field>
           <Field label="Mean sequence length" className="col-span-2"
                  hint={`${Math.min(cfg.avgSeqLen, cfg.context).toLocaleString()} tokens`}>
-            <Slider min={128} max={cfg.context} step={128}
+            <Slider aria-label="Mean sequence length" min={128} max={cfg.context} step={128}
                     value={[Math.min(cfg.avgSeqLen, cfg.context)]} onValueChange={([v]) => set('avgSeqLen', v!)} />
           </Field>
           <Field label="Prefix cache hit rate" className="col-span-2"
                  hint={cfg.prefixHit === 0 ? 'off' : `${(cfg.prefixHit * 100).toFixed(0)}%`}>
-            <Slider min={0} max={1} step={0.05} value={[cfg.prefixHit]} onValueChange={([v]) => set('prefixHit', v!)} />
+            <Slider aria-label="Prefix cache hit rate" min={0} max={1} step={0.05} value={[cfg.prefixHit]} onValueChange={([v]) => set('prefixHit', v!)} />
           </Field>
           {cfg.prefixHit > 0 ? (
             <Field label="Shared prefix length" className="col-span-2">

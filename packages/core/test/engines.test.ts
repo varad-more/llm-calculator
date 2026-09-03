@@ -136,3 +136,18 @@ test('assumption overrides move the answer', () => {
   assert.ok(roomier.plan.availableKvBytes > base.plan.availableKvBytes)
   assert.equal(roomier.plan.availableKvBytes - base.plan.availableKvBytes, resolveAssumptions().cuda_context_bytes.value)
 })
+
+test('invalid sizing inputs fail at the public API boundary', () => {
+  const request = {
+    model: 'meta-llama/Llama-3.1-8B-Instruct', gpu: 'h100-sxm-80', engine: 'vllm' as const,
+    context: 8192, concurrency: 8,
+  }
+  assert.throws(() => size({ ...request, context: 0 }), /context must be a positive integer/)
+  assert.throws(() => size({ ...request, model: 42 as never }), /model must be a snapshot id or config object/)
+  assert.throws(() => size({ ...request, avgSeqLen: 8193 }), /avgSeqLen must not exceed context/)
+  assert.throws(() => size({ ...request, memoryUtilization: 1.1 }), /memoryUtilization/)
+  assert.throws(
+    () => size({ ...request, prefixCache: { enabled: true, hitRate: 2, sharedPrefixTokens: 1 } }),
+    /prefixCache.hitRate/,
+  )
+})

@@ -56,6 +56,16 @@ export function resolveAssumptions(overrides: AssumptionOverrides = {}): Assumpt
   const out = {} as Assumptions
   for (const k of Object.keys(base) as AssumptionKey[]) {
     const o = overrides[k]
+    if (o !== undefined) {
+      const fraction = base[k].unit === 'fraction'
+      const validFraction = ['mbu_decode', 'mfu_prefill', 'interconnect_efficiency'].includes(k)
+        ? o > 0 && o <= 1
+        : o >= 0 && o < 1
+      if (!Number.isFinite(o) || o < 0 || (fraction && !validFraction) ||
+          (k === 'quant_group_size' && (!Number.isSafeInteger(o) || o < 1))) {
+        throw new RangeError(`Invalid override for ${k}: ${o}`)
+      }
+    }
     out[k] = o === undefined ? base[k] : { ...base[k], value: o, confidence: 'high', rationale: `user override (was ${base[k].value}: ${base[k].rationale})` }
   }
   for (const k of Object.keys(overrides)) {

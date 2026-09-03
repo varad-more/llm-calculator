@@ -179,6 +179,11 @@ export async function main(argv: string[]): Promise<number> {
     return p.fits ? 0 : 1
   } catch (e) {
     if (e instanceof IncompleteConfigError || e instanceof UnknownEntityError) { console.error(red(e.message)); return 2 }
+    const code = e && typeof e === 'object' && 'code' in e ? String(e.code) : ''
+    if (e instanceof TypeError || e instanceof RangeError || e instanceof SyntaxError || code.startsWith('ERR_PARSE_ARGS_')) {
+      console.error(red((e as Error).message))
+      return 2
+    }
     throw e
   }
 }

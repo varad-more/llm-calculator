@@ -25,6 +25,7 @@ export const metadata = {
     'What quantization actually stores, why 4-bit is never 4 bits per weight, how the KV cache is ' +
     'sized under GQA/MLA/sliding-window attention, and the exact allocation each serving engine ' +
     'performs. Every number on this page is computed by the same functions the sizer uses.',
+  alternates: { canonical: '/explained/' },
 }
 
 // Everything below is computed at build time from the shipped snapshots, so the page cannot
@@ -59,8 +60,10 @@ function costLabel(scheme: QuantScheme): string {
   return p[0] === p[p.length - 1] ? f(p[0]!) : `${f(p[0]!)}\u2013${f(p[p.length - 1]!).slice(1)}`
 }
 
-function metadataBpw(scheme: any): number {
-  return scheme.kind === 'grouped' ? (scheme.scaleBits + scheme.zeroBits) / scheme.groupSize : 0
+function metadataBpw(scheme: { kind: string; scaleBits?: number; zeroBits?: number; groupSize?: number }): number {
+  return scheme.kind === 'grouped' && scheme.groupSize
+    ? ((scheme.scaleBits ?? 0) + (scheme.zeroBits ?? 0)) / scheme.groupSize
+    : 0
 }
 
 function effectiveBpw(spec: ModelSpec, quant: QuantScheme): { bytes: number; bpw: number } {

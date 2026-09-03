@@ -106,7 +106,12 @@ test('the auto-fixed configuration actually fits', () => {
     if (p.fits || !p.autofix || p.autofix.maxModelLen === 0 || p.autofix.maxNumSeqs === 0) continue
     // The auto-fix is stated for the SAME workload shape: max_model_len is the per-request
     // cap and max_num_seqs the concurrency at the requested average length.
-    const fixed = size({ ...req, context: p.autofix.maxModelLen, concurrency: p.autofix.maxNumSeqs })
+    const fixed = size({
+      ...req,
+      context: p.autofix.maxModelLen,
+      concurrency: p.autofix.maxNumSeqs,
+      avgSeqLen: Math.min(req.avgSeqLen ?? req.context, p.autofix.maxModelLen),
+    })
     assert.ok(fixed.plan.fits,
       `autofix ${JSON.stringify(p.autofix)} for ${JSON.stringify(req)} still does not fit`)
     checked++

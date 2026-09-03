@@ -33,7 +33,7 @@ function modelsBySize(): { id: string; params: number }[] {
 }
 
 export function Speculative({ req, result }: { req: SizingRequest; result: SizingResult }) {
-  const candidates = useMemo(modelsBySize, [])
+  const candidates = useMemo(() => modelsBySize(), [])
   const [draft, setDraft] = useState(candidates[0]!.id)
   const [k, setK] = useState(4)
   const [acceptance, setAcceptance] = useState(0.7)
@@ -74,10 +74,10 @@ export function Speculative({ req, result }: { req: SizingRequest; result: Sizin
           </Select>
         </Field>
         <Field label="Speculative tokens" hint={String(k)}>
-          <Slider min={1} max={10} step={1} value={[k]} onValueChange={([v]) => setK(v!)} />
+          <Slider aria-label="Speculative tokens" min={1} max={10} step={1} value={[k]} onValueChange={([v]) => setK(v!)} />
         </Field>
         <Field label="Acceptance rate" hint={`${(acceptance * 100).toFixed(0)}% — measure it, do not guess`}>
-          <Slider min={0.05} max={0.99} step={0.01} value={[acceptance]} onValueChange={([v]) => setAcceptance(v!)} />
+          <Slider aria-label="Acceptance rate" min={0.05} max={0.99} step={0.01} value={[acceptance]} onValueChange={([v]) => setAcceptance(v!)} />
         </Field>
       </div>
 

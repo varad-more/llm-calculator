@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llmsize"
+version = "0.1.0"
+description = "Engine-aware GPU memory, throughput, and serving-config calculator for LLM inference."
+requires-python = ">=3.9"
+license = "Apache-2.0"
+authors = [{ name = "Varad More" }]
+keywords = ["llm", "inference", "gpu", "vram", "vllm", "sglang"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.urls]
+Homepage = "https://varad-more.github.io/llm-calculator/"
+Repository = "https://github.com/varad-more/llm-calculator"
+
+[tool.setuptools]
+packages = ["llmsize"]
