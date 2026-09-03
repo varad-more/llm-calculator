@@ -11,6 +11,7 @@ const SPARSE_BF16_TFLOPS: Record<string, number> = {
   'h100-sxm-80': 1978.9, 'h100-pcie-80': 1513, 'h200-sxm-141': 1978.9, 'b200-sxm-192': 4500,
   'a100-sxm-80': 624, 'a100-pcie-80': 624, 'a100-sxm-40': 624, 'l40s-48': 733,
   'l4-24': 242, 'a10g-24': 250, 'rtx4090-24': 330.4, 'mi300x-192': 2614.9,
+  'rtx5090-32': 419, 'rtx3090-24': 142.4,
 }
 // Apple publishes no tensor-core sparsity figure to paste in by mistake — there is no 2:1 mode
 // and no marketed TFLOPS at all. The compute figures for these come from a measured SGEMM
@@ -20,7 +21,8 @@ const NO_VENDOR_SPARSITY = new Set([
 ])
 const SPARSE_FP8_TFLOPS: Record<string, number> = {
   'h100-sxm-80': 3957.8, 'h100-pcie-80': 3026, 'h200-sxm-141': 3957.8, 'b200-sxm-192': 9000,
-  'l40s-48': 1466, 'l4-24': 485, 'rtx4090-24': 1321.2, 'mi300x-192': 5229.8,
+  'l40s-48': 1466, 'l4-24': 485, 'rtx4090-24': 660.6, 'mi300x-192': 5229.8,
+  'rtx5090-32': 838,
 }
 
 test('every GPU entry is schema-complete and sourced', () => {

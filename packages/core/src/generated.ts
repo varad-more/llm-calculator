@@ -239,7 +239,7 @@ export const DATA: DataBundle = {
     "tf32": 82.6,
     "fp16": 165.2,
     "bf16": 165.2,
-    "fp8": 660.6,
+    "fp8": 330.3,
     "int8": 660.6
    },
    "interconnect": {
@@ -247,8 +247,8 @@ export const DATA: DataBundle = {
     "bidirectionalBytesPerSec": 32000000000
    },
    "sparsity_excluded": true,
-   "notes": "fp16/bf16 figure is with FP32 accumulate, which is what inference kernels use. FP16-accumulate peaks at 330.3 dense but is not the serving path.",
-   "source_url": "https://images.nvidia.com/aem-dam/Solutions/geforce/ada/nvidia-ada-gpu-architecture.pdf"
+   "notes": "fp16/bf16/fp8 are the FP32-accumulate dense figures, which is the serving path. FP16-accumulate peaks higher (330.3 bf16, 660.6 fp8) but is not what inference kernels use. int8 is the whitepaper's dense INT8 TOPS.",
+   "source_url": "https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf"
   },
   {
    "id": "mi300x-192",
@@ -397,6 +397,51 @@ export const DATA: DataBundle = {
    "sparsity_excluded": true,
    "notes": "76-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
    "source_url": "https://www.apple.com/newsroom/2023/06/apple-introduces-m2-ultra/"
+  },
+  {
+   "id": "rtx5090-32",
+   "name": "NVIDIA GeForce RTX 5090 32GB",
+   "vendor": "nvidia",
+   "vramBytes": 34359738368,
+   "memoryType": "GDDR7",
+   "memBandwidthBytesPerSec": 1792000000000,
+   "tflopsDense": {
+    "fp32": 104.8,
+    "tf32": 104.8,
+    "fp16": 209.5,
+    "bf16": 209.5,
+    "fp8": 419,
+    "int8": 838
+   },
+   "interconnect": {
+    "kind": "pcie5",
+    "bidirectionalBytesPerSec": 64000000000
+   },
+   "sparsity_excluded": true,
+   "notes": "Tensor TFLOPS are the FP32-accumulate figures, which is what serving kernels use, and the dense half of the whitepaper's dense/sparse pair. GeForce has no NVLink, so multi-GPU is over PCIe and the all-reduce term dominates prefill at higher tp.",
+   "source_url": "https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf"
+  },
+  {
+   "id": "rtx3090-24",
+   "name": "NVIDIA GeForce RTX 3090 24GB",
+   "vendor": "nvidia",
+   "vramBytes": 25769803776,
+   "memoryType": "GDDR6X",
+   "memBandwidthBytesPerSec": 936000000000,
+   "tflopsDense": {
+    "fp32": 35.6,
+    "tf32": 35.6,
+    "fp16": 71.2,
+    "bf16": 71.2,
+    "int8": 284.7
+   },
+   "interconnect": {
+    "kind": "pcie4",
+    "bidirectionalBytesPerSec": 32000000000
+   },
+   "sparsity_excluded": true,
+   "notes": "Tensor TFLOPS are the FP32-accumulate figures, which is what serving kernels use, and the dense half of the whitepaper's dense/sparse pair. GeForce has no NVLink, so multi-GPU is over PCIe and the all-reduce term dominates prefill at higher tp. Ampere has no FP8 tensor path, so fp8 is absent rather than approximated.",
+   "source_url": "https://images.nvidia.com/aem-dam/Solutions/geforce/blackwell/nvidia-rtx-blackwell-gpu-architecture.pdf"
   }
  ],
  "assumptions": {
