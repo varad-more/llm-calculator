@@ -1,6 +1,6 @@
 import { DATA } from './generated.ts'
 import { UnknownEntityError } from './errors.ts'
-import type { Assumptions, AssumptionOverrides, AssumptionKey, GpuSpec } from './types.ts'
+import type { Assumptions, AssumptionOverrides, AssumptionKey, GpuSpec, QualityMeasurement, QuantScheme } from './types.ts'
 
 /** All GPUs in data/gpus.json. */
 export function listGpus(): GpuSpec[] {
@@ -12,6 +12,24 @@ export function getGpu(id: string): GpuSpec {
   const hit = (DATA.gpus as GpuSpec[]).find((g) => g.id === id)
   if (!hit) throw new UnknownEntityError('gpu', id, (DATA.gpus as GpuSpec[]).map((g) => g.id))
   return hit
+}
+
+/**
+ * Published accuracy measurements for a quantization scheme, or an empty list when nobody has
+ * measured it. Empty means unmeasured — it does not mean lossless.
+ */
+export function qualityFor(scheme: QuantScheme): QualityMeasurement[] {
+  return (DATA.quality as QualityMeasurement[]).filter((q) => q.scheme === scheme)
+}
+
+/** Every quantization accuracy measurement in data/quality.json. */
+export function listQuality(): QualityMeasurement[] {
+  return DATA.quality as QualityMeasurement[]
+}
+
+/** Relative perplexity cost of a measurement, e.g. 0.0091 for +0.91%. */
+export function pplPenalty(q: QualityMeasurement): number {
+  return q.ppl / q.baselinePpl - 1
 }
 
 /** The shipped empirical constants, unmodified. */

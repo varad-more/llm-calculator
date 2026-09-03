@@ -15,6 +15,7 @@ import {
   type ModelSpec,
   type QuantScheme,
   type KvDtype,
+  qualityFor, pplPenalty,
 } from '@llmsize/core'
 import { specFor } from '@/lib/models'
 
@@ -46,6 +47,18 @@ const KV_MODELS = [
 
 /** Bytes actually spent per stored weight — the only honest way to compare schemes. */
 /** Group metadata amortised over the weights it covers, in bits per weight. */
+/**
+ * Published accuracy cost for a scheme, as a range when several models were measured.
+ * An em dash means nobody has published a number — not that the scheme is free.
+ */
+function costLabel(scheme: QuantScheme): string {
+  const ms = qualityFor(scheme)
+  if (!ms.length) return '—'
+  const p = ms.map(pplPenalty).sort((a, b) => a - b)
+  const f = (v: number) => `+${(v * 100).toFixed(v * 100 < 1 ? 2 : 1)}%`
+  return p[0] === p[p.length - 1] ? f(p[0]!) : `${f(p[0]!)}\u2013${f(p[p.length - 1]!).slice(1)}`
+}
+
 function metadataBpw(scheme: any): number {
   return scheme.kind === 'grouped' ? (scheme.scaleBits + scheme.zeroBits) / scheme.groupSize : 0
 }
@@ -268,7 +281,7 @@ KV pool  = budget - weights - overhead              everything left, frozen into
             embeddings are a big fraction of the parameters, so the two effects together push a
             &ldquo;4-bit&rdquo; checkpoint well past 4 bits per weight:
           </p>
-          <Table head={['Scheme', 'Nominal', 'Group', 'Scale + zero', 'Metadata', '16-bit tensors', 'Effective bpw', `${REF.split('/')[1]}`]}>
+          <Table head={['Scheme', 'Nominal', 'Group', 'Scale + zero', 'Metadata', '16-bit tensors', 'Effective bpw', `${REF.split('/')[1]}`, 'Accuracy cost']}>
             {SCHEMES.map((s) => {
               const spec = quant.schemes[s]
               const e = effectiveBpw(ref, s)
@@ -293,6 +306,7 @@ KV pool  = budget - weights - overhead              everything left, frozen into
                   </td>
                   <td className="py-2">{e.bpw.toFixed(2)}</td>
                   <td className="py-2">{gib(e.bytes)}</td>
+                  <td className="py-2">{costLabel(s)}</td>
                 </tr>
               )
             })}
@@ -311,7 +325,7 @@ KV pool  = budget - weights - overhead              everything left, frozen into
             bulk — so a scheme&rsquo;s bits-per-weight is not derivable from its name. The numbers below
             are measured over a whole 7B checkpoint, not computed:
           </p>
-          <Table head={['GGUF scheme', 'Measured bpw', `${REF.split('/')[1]} weights`, 'vs bf16']}>
+          <Table head={['GGUF scheme', 'Measured bpw', `${REF.split('/')[1]} weights`, 'vs bf16', 'Accuracy cost']}>
             {GGUF.map((g) => {
               const bpw = quant.gguf.bpw[g] as number
               const b = (refParams.total * bpw) / 8
@@ -321,6 +335,7 @@ KV pool  = budget - weights - overhead              everything left, frozen into
                   <td className="py-2">{bpw.toFixed(2)}</td>
                   <td className="py-2">{gib(b)}</td>
                   <td className="py-2">{(b / bf16.bytes).toFixed(2)}x</td>
+                  <td className="py-2">{costLabel(`gguf:${g}` as QuantScheme)}</td>
                 </tr>
               )
             })}
@@ -328,6 +343,27 @@ KV pool  = budget - weights - overhead              everything left, frozen into
           <p className="text-xs text-muted-foreground">
             Source: <a href={quant.gguf._source_url} target="_blank" rel="noreferrer" className="underline underline-offset-2">llama.cpp k-quants PR #1684</a>.
             Q4_K_M is 4.85 bpw, not 4 — a 21% error if you take the name literally.
+          </p>
+          <p>
+            <strong>The accuracy column is reported, not predicted.</strong> Every figure is the
+            perplexity increase the cited work measured on the model it measured, and nothing else on
+            this page depends on it. Two things are worth reading off it. First, the bits in the name
+            do not order the quality: awq-int4 costs {costLabel('awq-int4')} where gptq-int4 at the
+            same width costs {costLabel('gptq-int4')}, because how you choose the scales matters more
+            than how many bits you keep. Second, the curve is steep at the bottom and flat at the top —
+            Q6_K is {costLabel('gguf:Q6_K' as QuantScheme)} and Q2_K is{' '}
+            {costLabel('gguf:Q2_K' as QuantScheme)} — so the cheap wins are all above four bits and
+            the last bit you take out is by far the most expensive.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            An em dash means no published measurement, which is not the same as no cost. fp8 and int8
+            are widely described as near-lossless and are dashed here anyway, because this file only
+            carries numbers somebody actually ran. Sources:{' '}
+            <a href="https://github.com/ggml-org/llama.cpp/pull/1684" target="_blank" rel="noreferrer" className="underline underline-offset-2">llama.cpp #1684</a>
+            {' '}(wikitext, LLaMA-7B) and{' '}
+            <a href="https://arxiv.org/abs/2306.00978" target="_blank" rel="noreferrer" className="underline underline-offset-2">AWQ, arXiv:2306.00978</a>
+            {' '}(wikitext-2, LLaMA-7B/13B/30B/65B), in{' '}
+            <span className="font-mono">data/quality.json</span>.
           </p>
           <p>
             <strong>What quantization does not shrink.</strong> Only the weights term. The KV cache,

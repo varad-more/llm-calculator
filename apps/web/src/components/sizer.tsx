@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import {
   size, listGpus, listModels, normalizeConfig, gib, bytes as humanBytes, seconds, count,
+  qualityFor, pplPenalty,
   IncompleteConfigError, type KvDtype, type QuantScheme, type EngineName, type SizingRequest,
 } from '@llmsize/core'
 import { resolveConfig, parsePasted, type ConfigSource } from '@/lib/hf'
@@ -286,12 +287,13 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
               </div>
             ) : null}
 
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Stat label="KV pool" value={`${count(p.maxTokens)} tokens`} sub={gib(p.availableKvBytes)} />
               <Stat label="Decode" value={`${r.throughput.decode.tokensPerSecond.toFixed(0)} tok/s`}
                     sub={`ITL ${seconds(r.throughput.decode.stepSeconds)}`} />
               <Stat label="Prefill" value={`${r.throughput.prefill.tokensPerSecond.toFixed(0)} tok/s`}
                     sub={`TTFT ${seconds(r.throughput.prefill.ttftSeconds)} · ${r.throughput.bound}-bound`} />
+              <Stat {...quantCost(cfg.quant as QuantScheme)} />
             </div>
           </CardContent>
         </Card>
@@ -373,6 +375,25 @@ export function Sizer({ initialModel }: { initialModel?: string }) {
       </div>
     </div>
   )
+}
+
+/**
+ * The published accuracy cost of the selected scheme. An absent measurement is reported as
+ * unmeasured, never as lossless — nobody has run the benchmark, which is not the same as it
+ * being free.
+ */
+function quantCost(quant: QuantScheme): { label: string; value: string; sub: string } {
+  const label = 'Quantization cost'
+  const ms = qualityFor(quant)
+  if (!ms.length) {
+    return { label, value: 'unmeasured', sub: `no published perplexity for ${quant}` }
+  }
+  const pct = ms.map(pplPenalty).sort((a, b) => a - b)
+  const lo = pct[0]!, hi = pct[pct.length - 1]!
+  const fmt = (v: number) => `${(v * 100).toFixed(v * 100 < 1 ? 2 : 1)}%`
+  const value = lo === hi ? `+${fmt(lo)} ppl` : `+${fmt(lo)}\u2013${fmt(hi)} ppl`
+  const models = ms.length === 1 ? ms[0]!.model : `${ms.length} models`
+  return { label, value, sub: `${models}, ${ms[0]!.dataset} — measured elsewhere, not here` }
 }
 
 function Row({ label, bytes }: { label: string; bytes: number }) {

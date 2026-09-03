@@ -11,6 +11,7 @@ const bundle = {
   gpus: read('data/gpus.json').gpus,
   assumptions: read('data/assumptions.json').assumptions,
   quant: read('data/quant-bpw.json'),
+  quality: read('data/quality.json').measurements,
   archDefaults: read('data/arch-defaults.json').byModelType,
   // Written by `pnpm validate`; absent until a real engine log has been diffed.
   validation: (() => { try { return read('data/validation-index.json') } catch { return [] } })(),
@@ -30,7 +31,7 @@ writeFileSync(
   join(ROOT, 'packages/core/src/generated.ts'),
   header +
     'export interface DataBundle {\n' +
-    '  gpus: any[]\n  assumptions: Record<string, any>\n  quant: any\n' +
+    '  gpus: any[]\n  assumptions: Record<string, any>\n  quant: any\n  quality: any[]\n' +
     '  archDefaults: Record<string, any>\n  models: Record<string, any>\n  validation: any[]\n}\n\n' +
     'export const DATA: DataBundle = ' + json + '\n',
 )

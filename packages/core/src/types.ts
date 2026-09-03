@@ -132,6 +132,17 @@ export type Assumptions = Record<AssumptionKey, Assumption>
 /** Numeric overrides supplied by the user (CLI --assume, UI panel). */
 export type AssumptionOverrides = Partial<Record<AssumptionKey, number>>
 
+/** A published accuracy measurement for one quantization scheme. Reported, never predicted. */
+export interface QualityMeasurement {
+  scheme: QuantScheme
+  model: string
+  dataset: string
+  baselinePpl: number
+  ppl: number
+  confidence: 'low' | 'medium' | 'high'
+  source_url: string
+}
+
 export interface Warning {
   code: string
   message: string

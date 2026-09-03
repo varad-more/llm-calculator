@@ -3,6 +3,7 @@ export interface DataBundle {
   gpus: any[]
   assumptions: Record<string, any>
   quant: any
+  quality: any[]
   archDefaults: Record<string, any>
   models: Record<string, any>
   validation: any[]
@@ -636,6 +637,161 @@ export const DATA: DataBundle = {
    "int8": 8
   }
  },
+ "quality": [
+  {
+   "scheme": "gguf:Q2_K",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 6.7764,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q3_K_S",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 6.4571,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q3_K_M",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 6.1503,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q3_K_L",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 6.0869,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q4_K_S",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 6.0215,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q4_K_M",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 5.9601,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q5_K_S",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 5.9419,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q5_K_M",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 5.9208,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "gguf:Q6_K",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext",
+   "baselinePpl": 5.9066,
+   "ppl": 5.911,
+   "confidence": "medium",
+   "source_url": "https://github.com/ggml-org/llama.cpp/pull/1684"
+  },
+  {
+   "scheme": "awq-int4",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 5.68,
+   "ppl": 5.78,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+   "scheme": "awq-int4",
+   "model": "LLaMA-13B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 5.09,
+   "ppl": 5.19,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+   "scheme": "awq-int4",
+   "model": "LLaMA-30B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 4.1,
+   "ppl": 4.21,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+   "scheme": "awq-int4",
+   "model": "LLaMA-65B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 3.53,
+   "ppl": 3.62,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+   "scheme": "gptq-int4",
+   "model": "LLaMA-7B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 5.68,
+   "ppl": 6.22,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+   "scheme": "gptq-int4",
+   "model": "LLaMA-13B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 5.09,
+   "ppl": 5.23,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+   "scheme": "gptq-int4",
+   "model": "LLaMA-30B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 4.1,
+   "ppl": 4.24,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  },
+  {
+   "scheme": "gptq-int4",
+   "model": "LLaMA-65B",
+   "dataset": "wikitext-2",
+   "baselinePpl": 3.53,
+   "ppl": 3.66,
+   "confidence": "medium",
+   "source_url": "https://arxiv.org/abs/2306.00978"
+  }
+ ],
  "archDefaults": {
   "gemma3_text": {
    "source_url": "https://github.com/huggingface/transformers/blob/main/src/transformers/models/gemma3/configuration_gemma3.py",
