@@ -32,7 +32,7 @@ export const DATA: DataBundle = {
     "bidirectionalBytesPerSec": 900000000000
    },
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-tensor-core/nvidia-tensor-core-gpu-datasheet"
+   "source_url": "https://www.nvidia.com/en-us/data-center/h100/"
   },
   {
    "id": "h100-pcie-80",
@@ -54,7 +54,7 @@ export const DATA: DataBundle = {
     "bidirectionalBytesPerSec": 600000000000
    },
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-tensor-core/nvidia-tensor-core-gpu-datasheet"
+   "source_url": "https://web.archive.org/web/20240626064115/https://nvdam.widen.net/s/q6rttxs2pw/h100-datasheet-2287922"
   },
   {
    "id": "h200-sxm-141",
@@ -76,7 +76,7 @@ export const DATA: DataBundle = {
     "bidirectionalBytesPerSec": 900000000000
    },
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-data-center-overview/hpc-datasheet-sc23-h200"
+   "source_url": "https://dam-cdn.nvd.orangelogic.com/AssetLink/5o2qgy5d2835ve2pm11i62kv8mphqta8.pdf"
   },
   {
    "id": "b200-sxm-192",
@@ -99,7 +99,7 @@ export const DATA: DataBundle = {
     "bidirectionalBytesPerSec": 1800000000000
    },
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-blackwell-architecture/datasheet"
+   "source_url": "https://dam-cdn.nvd.orangelogic.com/AssetLink/y441155802qub41q118b2852i557jem5.pdf"
   },
   {
    "id": "a100-sxm-80",
@@ -185,7 +185,7 @@ export const DATA: DataBundle = {
    },
    "reservedVramFraction": 0.0625,
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-l40s/l40s-datasheet-28413",
+   "source_url": "https://www.nvidia.com/en-us/data-center/l40s/",
    "notes": "GDDR6 datacenter cards ship with in-band ECC enabled, which stores parity in the framebuffer itself and costs 1/16 of capacity. AWS documents the result per instance: 22 GiB of 24 on the A10G (g5) and L4 (g6), 44 GiB of 48 on the L40S (g6e). The 1/16 is the mechanism and matches those figures to within AWS's whole-GiB rounding. Consumer GeForce cards have no ECC and are not reduced. Figures: https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html"
   },
   {
@@ -209,7 +209,7 @@ export const DATA: DataBundle = {
    },
    "reservedVramFraction": 0.0625,
    "sparsity_excluded": true,
-   "source_url": "https://resources.nvidia.com/en-us-l4/l4-datasheet",
+   "source_url": "https://dam-cdn.nvd.orangelogic.com/AssetLink/8f4cjsr458mk07kxxt608b1ct0t570x7.pdf",
    "notes": "GDDR6 datacenter cards ship with in-band ECC enabled, which stores parity in the framebuffer itself and costs 1/16 of capacity. AWS documents the result per instance: 22 GiB of 24 on the A10G (g5) and L4 (g6), 44 GiB of 48 on the L40S (g6e). The 1/16 is the mechanism and matches those figures to within AWS's whole-GiB rounding. Consumer GeForce cards have no ECC and are not reduced. Figures: https://docs.aws.amazon.com/ec2/latest/instancetypes/ac.html"
   },
   {
@@ -341,7 +341,7 @@ export const DATA: DataBundle = {
    "reservedVramFraction": 0.25,
    "sparsity_excluded": true,
    "notes": "40-core GPU. arXiv:2502.05317 measured peak FP32 via Metal Performance Shaders SGEMM on the base chip (M2 2.24, M3 2.47, M4 2.90 TFLOPS at 10 GPU cores), scaled by Apple's published core count for this configuration. https://arxiv.org/abs/2502.05317 fp16/bf16 are set equal to fp32 rather than assuming Apple's half-rate multiplier, so prefill here is a floor, not a peak. Decode is bandwidth-bound and uses Apple's own published figure. Apple GPUs address unified memory, but Metal caps a process at recommendedMaxWorkingSetSize, ~75% of RAM, which llama.cpp logs and treats as a hard ceiling; raise it with sysctl iogpu.wired_limit_mb. https://developer.apple.com/forums/thread/732035 Tensor parallelism across Apple devices is not a thing; the link is zeroed so any tp>1 shows as unserviceable rather than plausible.",
-   "source_url": "https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/"
+   "source_url": "https://arxiv.org/abs/2502.05317"
   },
   {
    "id": "m4-pro-64",
