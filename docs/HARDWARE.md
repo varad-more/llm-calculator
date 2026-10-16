@@ -23,7 +23,7 @@ ceiling, because quoting the sparse figure silently doubles every throughput est
 | `mi300x-192` | 192 GiB | HBM3 | 5.30 TB/s | 1307.4 | 2614.9 | infinity-fabric @ 896 GB/s | [datasheet](https://www.amd.com/content/dam/amd/en/documents/instinct-tech-docs/data-sheets/amd-instinct-mi300x-data-sheet.pdf) |
 | `m5-ultra-512` | 512 GiB | unified | 1.20 TB/s | 23.2 | — | none @ 0 GB/s | [datasheet](https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/) |
 | `m5-max-128` | 128 GiB | unified | 0.61 TB/s | 11.6 | — | none @ 0 GB/s | [datasheet](https://www.apple.com/newsroom/2026/08/apple-introduces-new-mac-studio-with-m5-max-and-m5-ultra/) |
-| `m4-max-128` | 128 GiB | unified | 0.55 TB/s | 11.6 | — | none @ 0 GB/s | [datasheet](https://arxiv.org/abs/2502.05317) |
+| `m4-max-128` | 128 GiB | unified | 0.55 TB/s | 11.6 | — | none @ 0 GB/s | [datasheet](https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/) |
 | `m4-pro-64` | 64 GiB | unified | 0.27 TB/s | 5.8 | — | none @ 0 GB/s | [datasheet](https://www.apple.com/newsroom/2024/10/apple-introduces-m4-pro-and-m4-max/) |
 | `m3-ultra-512` | 512 GiB | unified | 0.82 TB/s | 19.76 | — | none @ 0 GB/s | [datasheet](https://www.apple.com/newsroom/2025/03/apple-reveals-m3-ultra-taking-apple-silicon-to-a-new-extreme/) |
 | `m2-ultra-192` | 192 GiB | unified | 0.80 TB/s | 17.02 | — | none @ 0 GB/s | [datasheet](https://www.apple.com/newsroom/2023/06/apple-introduces-m2-ultra/) |
