@@ -220,11 +220,11 @@ export const DATA: DataBundle = {
    "memoryType": "GDDR6",
    "memBandwidthBytesPerSec": 600000000000,
    "tflopsDense": {
-    "fp32": 31.5,
-    "tf32": 62.5,
-    "fp16": 125,
-    "bf16": 125,
-    "int8": 250
+    "fp32": 35,
+    "tf32": 35,
+    "fp16": 70,
+    "bf16": 70,
+    "int8": 140
    },
    "interconnect": {
     "kind": "pcie4",
